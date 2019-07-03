@@ -20,7 +20,10 @@ module.exports = {
 
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
-    LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다"
+    LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
+    NOT_SAME_PASSWORD : "재입력된 비밀번호가 일치하지 않습니다",
 
+    CHANGE_SUCCESSS : "변경이 완료되었습니다.",
+    INVALID_NICKNAME : "잘못된 형식의 닉네임입니다"
 };
 
