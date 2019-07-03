@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const db = require('../../modules/pool');
+const db = require('../../module/pool');
 
-const util = require('../../modules/utils/utils');
-const statusCode = require('../../modules/utils/statusCode');
-const resMessage = require('../../modules/utils/responseMessage');
+const utils = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
 
 //비밀번호 변경
 router.put('/password', async (req, res) => {
@@ -17,7 +17,7 @@ router.put('/password', async (req, res) => {
     const getUserPasswordResult = await db.queryParam_None(getUserPasswordQuery);
 
     if(!getUserPasswordResult){
-        res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
     } else {
         const userPassword = getUserPasswordResult[0];
 
@@ -25,22 +25,22 @@ router.put('/password', async (req, res) => {
         const hashedPw = await crypto.pbkdf2(req.body.originalPassword.toString(), userPassword.salt.toString('base64'), 1000, 32, 'SHA512').toString();
         if(hashedPw != userPassword.password){
             //해싱된 비밀번호가 저장된 비밀번호와 다를 경우
-            res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.WRONG_PASSWORD));
+            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.WRONG_PASSWORD));
         }
     }
 
     if(req.body.newPassword != req.body.reNewPassword){
-        res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.DIFFERENT_PASSWORD));
+        res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NOT_SAME_PASSWORD));
     } else {
         const salt = await crypto.randomBytes(32);
-        const hashedPw = await crypto.pbkdf2(req.body.reNewPassword.toString(), salt.toString('base64'), 1000, 32, 'SHA512');
+        const hashedPw = await crypto.pbkdf2(req.body.newPassword.toString(), salt.toString('base64'), 1000, 32, 'SHA512');
         const editPasswordQuery = `UPDATE user SET password = ?, salt = ? WHERE user_idx = ?`;
         const editPasswordResult = await db.queryParam_Arr(editPasswordQuery,[hashedPw, salt, req.body.temp_idx]);
         
         if(!editPasswordResult){
-            res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.EDIT_PASSWORD_FAIL));
+            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.EDIT_PASSWORD_FAIL));
         } else{
-            res.status(200).send(util.successTrue(statusCode.OK, resMessage.EDIT_PASSWORD_SUCCESS));
+            res.status(200).send(utils.successTrue(statusCode.OK, resMessage.EDIT_PASSWORD_SUCCESS));
         }
     }
 });

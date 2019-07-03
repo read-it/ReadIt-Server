@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-const db = require('../../modules/pool');
+const db = require('../../module/pool');
 
-const authUtil = require('../../modules/utils/authUtils');
-const util = require('../../modules/utils/utils');
-const statusCode = require('../../modules/utils/statusCode');
-const resMessage = require('../../modules/utils/responseMessage');
+const authUtil = require('../../module/utils/authUtils');
+const utils = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
 const jwt = require('jsonwebtoken');
 
 //스크랩한 목록 조회
@@ -28,9 +28,9 @@ router.get('/scraplist', /*authUtil.isLoggedin,*/ async (req, res) => {
     const getScrapListResult = await db.queryParam_None(getScrapListQuery);
 
     if (!getScrapListResult) { //콘텐츠 idx 조회 실패했을 때
-        res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.GET_SCRAP_LIST_FAIL));
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.GET_SCRAP_LIST_FAIL));
     } else { 
-        res.status(200).send(util.successTrue(statusCode.OK, resMessage.GET_SCRAP_LIST_SUCCESS, getScrapListResult))
+        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.GET_SCRAP_LIST_SUCCESS, getScrapListResult))
     }
 });
 
