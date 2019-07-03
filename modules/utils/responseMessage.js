@@ -20,7 +20,15 @@ module.exports = {
 
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
-    LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다"
+    LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
 
+    GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
+    GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
+
+    //예으니가 임시로 만듦! 회원가입에서 사용하는 메세지 받으면 삭제 할 예정!
+    WRONG_PASSWORD: "비밀번호가 틀림",
+    DIFFERENT_PASSWORD: "재입력 비밀번호가 다름",
+    EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
+    EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공"
 };
 
