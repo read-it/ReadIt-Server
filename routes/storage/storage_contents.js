@@ -25,7 +25,10 @@ router.put('/delete', async (req, res) => {
 
     db.Transaction(async (connection) => {
         let selectCountResult = await db.queryParam_Arr(checkValidIdxQuery, targetContents)
-        if (selectCountResult[0].total !== targetContentsSize) {
+        if(selectCountResult == null){
+            res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+        }
+        else if (selectCountResult[0].total !== targetContentsSize) {
             res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.NO_CONTENT))
         } else {
             let result = await db.queryParam_Arr(updateDeleteFlagQuery, targetContents)
