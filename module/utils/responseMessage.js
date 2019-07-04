@@ -29,6 +29,9 @@ module.exports = {
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
     UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
     CREATED_TOTAL_CATEGORY_FAIL : "전체 카테고리 생성 실패",
+    MODIFY_CATE_SUCCESS : "카테고리 이름이 변경되었습니다.",
+    ALREADY_CATE_NAME : "카테고리 이름이 이미 존재합니다.",
+    INVALID_CATE : "카테고리는 5글자를 넘을 수 없습니다.",
 
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
