@@ -5,6 +5,7 @@ module.exports = {
     STORAGE_MAIN_SUCCESS: "보관소 조회 성공",
     CATEGORY_SELECT_SUCCESS: "카테고리 조회 성공",
     DELETE_CONTENTS_SUCCESS: "콘텐츠 삭제 성공",
+    READ_CONTENTS_SUCCESS: "콘텐츠 읽음 처리 성공",
     ADD_CONTENTS_SUCCESS: "콘텐츠 추가 성공",
     NO_CONTENT: "게시글이 존재하지 않습니다",
 
