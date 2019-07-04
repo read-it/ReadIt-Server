@@ -15,9 +15,7 @@ const refreshOptions = {
 module.exports = {
     sign: (user) => {
         const payload = {
-            idx: user.idx,
-            grade: user.grade,
-            name: user.name
+            idx: user.user_idx
         };
 
         const result = {
