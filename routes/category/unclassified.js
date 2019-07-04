@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const db = require('../../modules/pool');
+const db = require('../../module/pool');
 
-const util = require('../../modules/utils/utils');
-const statusCode = require('../../modules/utils/statusCode');
-const resMessage = require('../../modules/utils/responseMessage');
+const util = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
 
 router.get('/', async (req, res) => {
     //하이라이팅 개수 아직
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     INNER JOIN category AS cate
     ON cate.category_name LIKE '전체' AND cate.category_idx = cont.category_idx
     INNER JOIN user AS u
-    ON u.user_idx = ?
+    ON u.user_idx = 1
     WHERE cate.user_idx = u.user_idx
     ORDER BY cont.contents_idx DESC` ;
     let QueryResult = await db.queryParam_None(unCateQuery);
