@@ -28,6 +28,7 @@ module.exports = {
     
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
     UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
+    CREATED_TOTAL_CATEGORY_FAIL : "전체 카테고리 생성 실패",
 
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
@@ -37,7 +38,7 @@ module.exports = {
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
     INVALID_EMAIL : "잘못된 형식의 이메일입니다",
-    
+    INVALIE_PASSWORD : "잘못된 형식의 비밀번호입니다",
     
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
