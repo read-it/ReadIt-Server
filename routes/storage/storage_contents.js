@@ -4,8 +4,10 @@ const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool')
+const jwt = require('../../module/jwt')
+const authUtils = require('../../module/utils/authUtils')
 
-router.put('/delete', async (req, res) => {
+router.put('/delete',authUtils.isLoggedin,async (req, res) => {
     let targetContents = req.body.contents_idx_list.toString()
     let targetContentsSize = req.body.contents_idx_list.length
 
