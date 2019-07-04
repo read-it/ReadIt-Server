@@ -30,8 +30,9 @@ module.exports = {
 
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
+    INVALID_EMAIL : "잘못된 형식의 이메일입니다",
     
-    //예으니가 임시로 만듦! 회원가입에서 사용하는 메세지 받으면 삭제 할 예정!
+    
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
     EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공"
