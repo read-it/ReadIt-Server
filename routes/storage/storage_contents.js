@@ -1,9 +1,9 @@
 var express = require('express')
 var router = express.Router()
-const util = require('../../modules/utils/utils');
-const statusCode = require('../../modules/utils/statusCode');
-const resMessage = require('../../modules/utils/responseMessage');
-const db = require('../../modules/pool')
+const util = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
+const db = require('../../module/pool')
 
 router.put('/delete', async (req, res) => {
     let targetContents = req.body.contents_idx_list.toString()

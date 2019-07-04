@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const util = require('../../modules/utils/utils');
-const statusCode = require('../../modules/utils/statusCode');
-const resMessage = require('../../modules/utils/responseMessage');
-const db = require('../../modules/pool')
+const util = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
+const db = require('../../module/pool')
 
 router.get('/:category_idx/:sort', async (req, res) => {
     let findContentsByCategory =

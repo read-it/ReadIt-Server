@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 const ogs = require('open-graph-scraper')
 const moment = require('moment')
-const util = require('../../modules/utils/utils');
-const statusCode = require('../../modules/utils/statusCode');
-const resMessage = require('../../modules/utils/responseMessage');
-const db = require('../../modules/pool')
+const util = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
+const db = require('../../module/pool')
 
 router.post('/', async (req, res) => {
     let category_idx = req.body.category_idx
