@@ -22,6 +22,9 @@ module.exports = {
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
     LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
+    
+    CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
+    UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
 
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
