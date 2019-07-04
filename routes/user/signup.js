@@ -10,6 +10,17 @@ const jwt = require('../../module/jwt');
 
 router.post('/', async (req, res)=>{
     
+    //이메일 형식 확인하는 function
+    function emailIsValid (email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    }
+
+    //이메일 형식이 아닌 경우 실패
+    if(!(emailIsValid(req.body.email))){
+        res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_EMAIL));
+    }
+    else{
+
     //같은 이메일 찾아서 가져오기
     const sameEmailQuery = `SELECT email FROM user WHERE email = '${req.body.email}'`
     const sameEmailResult = await db.queryParam_None(sameEmailQuery);
@@ -58,6 +69,6 @@ router.post('/', async (req, res)=>{
             }   
         }
     }
-});
+}});
 
 module.exports = router;
