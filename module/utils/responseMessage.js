@@ -16,14 +16,29 @@ module.exports = {
     OUT_OF_VALUE: "파라미터 값이 잘못되었습니다",
     ID_OR_PW_NULL_VALUE: "아이디/비밀번호 값이 없습니다.",
     CREATED_USER: "회원 가입 성공",
+    CREATED_USER_FAIL: "유저 생성 실패",
     DELETE_USER: "회원 탈퇴 성공",
 
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
     LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
-
+    
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
-    UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공"
+    UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
 
+    GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
+    GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
+
+    NOT_SAME_PASSWORD : "재입력된 비밀번호가 일치하지 않습니다",
+
+    CHANGE_SUCCESSS : "변경이 완료되었습니다.",
+    INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
+    
+    //예으니가 임시로 만듦! 회원가입에서 사용하는 메세지 받으면 삭제 할 예정!
+    WRONG_PASSWORD: "비밀번호가 틀림",
+    EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
+    EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공"
+
+    
 };
 
