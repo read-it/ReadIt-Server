@@ -2,6 +2,9 @@ module.exports = {
     NULL_VALUE: "필요한 값이 없습니다",
     DB_ERROR : "DB_ERROR",
 
+    CATEGORY_SELECT_SUCCESS: "카테고리 조회 성공",
+    DELETE_CONTENTS_SUCCESS: "콘텐츠 삭제 성공",
+    ADD_CONTENTS_SUCCESS: "콘텐츠 추가 성공",
     NO_CONTENT: "게시글이 존재하지 않습니다",
 
     INVALID_TOKEN: "잘못된 형식의 토큰입니다.",
@@ -22,6 +25,9 @@ module.exports = {
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
     LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
+    
+    CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
+    UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
 
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
@@ -30,8 +36,9 @@ module.exports = {
 
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
+    INVALID_EMAIL : "잘못된 형식의 이메일입니다",
     
-    //예으니가 임시로 만듦! 회원가입에서 사용하는 메세지 받으면 삭제 할 예정!
+    
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
     EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공"
