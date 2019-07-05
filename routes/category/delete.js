@@ -20,16 +20,24 @@ router.delete('/:category_idx/:delete_flag', authUtils.isLoggedin ,async (req, r
     let category_idx = req.params.category_idx;
     let delete_flag = req.params.delete_flag;
 
+    let deleteFlag1Query = `DELETE C.* FROM category AS C WHERE category_idx= ?`;
+    let deleteFlag1Result = await db.queryParam_Arr(deleteFlag1Query, [category_idx, user]);
+
+    console.log(deleteFlag1Result)
+    if(!deleteFlag1Result) {
+        res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_CATE_IDX));
+    } else {
+        if(deleteFlag1Result.affectedRows != 1) {
+            res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_CATE_IDX));
+        }
+        res.status(200).send(util.successFalse(statusCode.OK, resMessage.DELETE_CATE_SUCCESS));
+    } 
+    
     switch(delete_flag) {
         case '0' :
-            let deleteFlag1Query = `DELETE C.* FROM category AS C WHERE category_idx= ? AND user_idx = '${req.body.email}'`
-            let deleteFlag1Result = await db.queryParam_Arr(deleteFlag1Query, [category_idx]);
-            if(!deleteFlag1Result) {
-                res.status(200).send(util.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));
-            } else {
-                res.status(200).send(util.successFalse(statusCode.OK, resMessage.DELETE_CATE_SUCCESS));
-            }
+
         case '1' :
+                deleteFlag1Query = deleteFlag1Query.concat('  AND user_idx = user');
             let deleteFlag2Query = ''
     }
 });
