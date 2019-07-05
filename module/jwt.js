@@ -13,9 +13,9 @@ const refreshOptions = {
 };
 
 module.exports = {
-    sign: (user) => {
+    sign: (insertIdx) => {
         const payload = {
-            idx: user.insertId
+            idx: insertIdx
         };
 
         const result = {
@@ -45,9 +45,9 @@ module.exports = {
         }
         return decoded;
     },
-    refresh: (user) => {
+    refresh: (insertIdx) => {
         const payload = {
-            idx: user.insertId
+            idx: insertIdx
         };
 
         return jwt.sign(payload, secretOrPrivateKey, options);

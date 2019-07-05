@@ -40,6 +40,9 @@ module.exports = {
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
 
+    GET_HIGHLIGHT_LIST_SUCCESS: "하이라이트 리스트 조회 성공",
+    GET_HIGHLIGHT_LIST_FAIL: "하이라이트 리스트 조회 실패",
+
     NOT_SAME_PASSWORD : "재입력된 비밀번호가 일치하지 않습니다",
 
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
