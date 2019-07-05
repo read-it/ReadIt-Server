@@ -7,7 +7,6 @@ const authUtil = require('../../module/utils/authUtils');
 const utils = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
-const jwt = require('../../module/jwt');
 
 //스크랩한 목록 조회
 router.get('/scraplist', authUtil.isLoggedin, async (req, res) => {
