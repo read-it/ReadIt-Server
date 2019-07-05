@@ -21,7 +21,7 @@ router.get('/scraplist', authUtil.isLoggedin, async (req, res) => {
                                     ON C.contents_idx=H.contents_idx
                                     GROUP BY C.contents_idx) M
                                 ON S.contents_idx = M.contents_idx
-                                WHERE S.user_idx = ${userIdx} ORDER BY scrap_date DESC`;
+                                WHERE M.user_idx = ${userIdx} ORDER BY scrap_date DESC`;
     
     console.log(getScrapListQuery);
     
