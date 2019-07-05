@@ -19,12 +19,12 @@ router.post('/', async (req, res)=>{
     //비밀번호 형식 확인하는 function
     function passwordIsValid(password) {
         if(password.length<=12 && password.length>=8){
-          return(isAlphanumeric(password));
+            return(isAlphanumeric(password));
         }
         else{
-          return false
+            return false
         }
-      }
+    }
 
     //이메일 형식이 아닌 경우 실패
     if(!(emailIsValid(req.body.email))){

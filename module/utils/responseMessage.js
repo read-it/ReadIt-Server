@@ -34,6 +34,8 @@ module.exports = {
     MODIFY_CATE_SUCCESS : "카테고리 이름이 변경되었습니다.",
     ALREADY_CATE_NAME : "카테고리 이름이 이미 존재합니다.",
     INVALID_CATE : "카테고리는 5글자를 넘을 수 없습니다.",
+    DELETE_CATE_SUCCESS : "카테고리를 성공적으로 삭제했습니다.",
+    DELETE_CATE_AND_CONT_SUCCESS : "카테고리와 콘텐츠를 성공적으로 삭제했습니다",
 
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
