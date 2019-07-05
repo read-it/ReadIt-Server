@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
         //입력비밀번호와 저장 비밀번호 같은지 체크
         if(userResult[0].password==inputHashedPw.toString('base64')){
             //토큰 발급
-            const tokens = jwt.sign(userResult[0]);
+            const tokens = jwt.sign(userResult[0].user_idx);
             let updateTokenQuery = 'UPDATE user SET refresh_token = ? WHERE email = ?'
             let updateTokenResult = await db.queryParam_Parse(updateTokenQuery, [tokens.refreshToken,req.body.email]);
             if(!updateTokenResult){
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
             }else{
             //클라이언트에게 refreshToken을 안전한 저장소에 저장해달라고 설명
             //헤더에 액세스토큰 넣기
-            res.setHeader("token",tokens.token);
+            res.setHeader("accesstoken",tokens.token);
             res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS));
             }
         }

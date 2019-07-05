@@ -12,34 +12,54 @@ const jwt = require('../../module/jwt');
 
 router.get('/highlightlist',authUtil.isLoggedin, async (req, res) => {
     //토큰을 통해 user 정보 가져오기
-    const userIdx = jwt.verify(req.headers.token).idx;
 
-    //로그인 유저가 하이라이팅한 콘텐츠 가져오기
-    const getHighlightListQuery = `SELECT C.*, H.*
-                                FROM contents C RIGHT JOIN highlight H
-                                ON C.contents_idx = H.contents_idx
-                                WHERE C.user_idx = ${userIdx} ORDER BY C.contents_idx DESC`;
-    const getHighlightListResult = await db.queryParam_None(getHighlightListQuery);
+    const userIdx = req.decoded.idx;
 
-    const highlightList = getHighlightListResult;
+    //로그인 유저가 하이라이팅한 콘텐츠, 하이라이트개수를 최근 하이라이트 시간순으로 가져오기
+    const getHighlightListQuery = `SELECT * FROM
+                                        (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt, MAX(H.highlight_date) AS recent_date
+                                        FROM contents C LEFT JOIN highlight H
+                                        ON C.contents_idx = H.contents_idx
+                                        GROUP BY C.contents_idx ) S
+                                    WHERE S.user_idx = ${userIdx} ORDER BY S.recent_date DESC`;
 
-    console.log(highlightList.pop());
+    //특정콘텐츠의 하이라이트 가져오기
+    const getHighlightInContentsQuery = `SELECT * FROM highlight
+                                            WHERE contents_idx = ?
+                                            ORDER BY highlight_date DESC`;
 
-    if (!getHighlightListResult) { //콘텐츠 idx 조회 실패했을 때
+    //클라이언트에게 보내줄 형식
+        // data:[{ 
+        //  "contentsInfo" : {콘텐츠 정보},
+        //  "highlightList" : [{하이라이트1},{하이라이트2}, ...]
+        // },
+        // { 
+        //  "contentsInfo" : {콘텐츠 정보},
+        //  "highlightList" : [{하이라이트1},{하이라이트2}, ...]
+        // }]
+    const highlightList = new Array();
+
+    const getHighlightListTransaction = await db.Transaction(async(connection) => {
+        var getHighlightListResult = await connection.query(getHighlightListQuery);
+
+        for(var i = 0; i < getHighlightListResult.length; i++){
+            
+            getHighlightInContentsResult = await connection.query(getHighlightInContentsQuery, [getHighlightListResult[i].contents_idx]);
+            
+            //json형식으로 저장
+            const highlightedContents = new Object();
+            highlightedContents.contentsInfo = getHighlightListResult[i];
+            highlightedContents.highlightList = getHighlightInContentsResult;
+        
+            //배열에 넣기
+            highlightList.push(highlightedContents);
+        }
+    })
+
+    if (!getHighlightListTransaction) { //콘텐츠 idx 조회 실패했을 때
         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.GET_HIGHLIGHT_LIST_FAIL));
     } else { 
-        // const highlightedContents = new Object();
-        // const highlightInContents = new Array();
-        // const highlight = new Array();
-        // for(const i = 0; i < getHighlightListResult.length; i++){
-        //     if(getHighlightListResult[i].contents_idx != getHighlightListResult[i-1].contents_idx){
-
-        //     }
-        //     highlightedContents.contentsIdx = getHighlightListResult[i].contents_idx;
-        //     highlight.push(getHighlightListResult[i]);
-        //     highlightedContents.highlight = highlight;
-        // }
-        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.GET_HIGHLIGHT_LIST_SUCCESS, getHighlightListResult))
+        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.GET_HIGHLIGHT_LIST_SUCCESS, highlightList))
     }
 });
 
