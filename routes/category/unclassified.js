@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     INNER JOIN category AS cate
     ON cate.category_name LIKE '전체' AND cate.category_idx = cont.category_idx
     INNER JOIN user AS u
-    ON u.user_idx = ?
+    ON u.user_idx = 1
     WHERE cate.user_idx = u.user_idx
     ORDER BY cont.contents_idx DESC` ;
     let QueryResult = await db.queryParam_None(unCateQuery);
