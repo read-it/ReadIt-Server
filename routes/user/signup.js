@@ -77,7 +77,7 @@ router.post('/', async (req, res)=>{
 
                     //토큰 생성
                     const tokens = jwt.sign(loginUserIdx); 
-                    const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken,tokens.idx]);
+                    const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken, loginUserIdx]);
                     if(!updateRefreshTokenResult){
                         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
                     } else{
