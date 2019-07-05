@@ -6,26 +6,120 @@ const db = require('../../module/pool');
 const utils = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
+const authUtils = require('../../module/utils/authUtils');
 
 //삭제된 콘텐츠 조회
-router.get('/', async (req, res) => {
-    const getDeletedListQuery = `SELECT * FROM contents C LEFT JOIN
-                                (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt 
-                                    FROM contents C LEFT JOIN highlight H
-                                    ON C.contents_idx=H.contents_idx
-                                    GROUP BY C.contents_idx) M
-                                ON C.contents_idx = M.contents_idx
-                                WHERE C.delete_flag = 1 ORDER BY scrap_date DESC`;
+router.get('/', authUtils.isLoggedin, async (req, res) => {
     
-    console.log(getScrapListQuery);
-    
-    const getScrapListResult = await db.queryParam_Arr(getDeletedListQuery,[]);
+    const userIdx = req.decoded.idx;
 
-    if (!getScrapListResult) { //콘텐츠 idx 조회 실패했을 때
-        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.GET_SCRAP_LIST_FAIL));
+    //user의 delete_flag = 1 인 컨텐츠 목록
+    const getDeletedListQuery = `SELECT * FROM 
+                                    (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt 
+                                        FROM contents C LEFT JOIN highlight H
+                                        ON C.contents_idx=H.contents_idx
+                                        GROUP BY C.contents_idx) D
+                                    WHERE D.user_idx = ${userIdx} AND D.delete_flag = true`;
+    
+    const getDeletedListResult = await db.queryParam_None(getDeletedListQuery);
+
+    if (!getDeletedListResult) {
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.GET_DELETED_CONTENTS_FAIL));
     } else { 
-        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.GET_SCRAP_LIST_SUCCESS, getScrapListResult))
+        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.GET_DELETED_CONTENTS_SUCCESS, getDeletedListResult))
     }
 });
 
+//영구삭제
+router.delete('/', authUtils.isLoggedin, async (req, res) => {
+    
+    let targetContents = req.body.contents_idx_list.toString()
+    let targetContentsSize = req.body.contents_idx_list.length
+
+    //선택한 항목이 삭제된 항목인지 확인
+    let checkValidIdxQuery =
+    `
+    SELECT count(*) as total
+    FROM contents
+    WHERE FIND_IN_SET(contents_idx, ?)
+    AND delete_flag = true;
+    `
+    //선택한 항목들 삭제
+    let deleteContentsQuery =
+    `
+    DELETE FROM contents
+    WHERE FIND_IN_SET(contents_idx,?);
+    `
+
+    var deleteTransaction = await db.Transaction(async(connection) => {
+        let selectCountResult = await connection.query(checkValidIdxQuery, [targetContents])
+    
+        if(!selectCountResult){
+            //선택항목 조회 실패
+            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+        }
+        else if (selectCountResult[0].total !== targetContentsSize) {
+            //선택항목이 삭제된 콘텐츠가 아니거나 없는 콘텐츠
+            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NO_DELETED_CONTENT))
+        } else {
+            //선택항목들 삭제
+            const result = await connection.query(deleteContentsQuery, [targetContents])
+            if (!result) {
+                res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+            }
+        }
+    })
+    if (!deleteTransaction) {
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
+    } else { 
+        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
+    }
+});
+
+//삭제된 항목 복원
+router.put('/', authUtils.isLoggedin, async (req, res) => {
+    
+    let targetContents = req.body.contents_idx_list.toString()
+    let targetContentsSize = req.body.contents_idx_list.length
+
+    //선택한 항목이 삭제된 항목인지 확인
+    let checkValidIdxQuery =
+    `
+    SELECT count(*) as total
+    FROM contents
+    WHERE FIND_IN_SET(contents_idx, ?)
+    AND delete_flag = true;
+    `
+    //선택한 항목들 복원
+    let updateDeleteFlagQuery = 
+    `
+    UPDATE contents
+    SET delete_flag = false
+    WHERE FIND_IN_SET(contents_idx,?)
+    `
+
+    var restoreTransaction = await db.Transaction(async(connection) => {
+        let selectCountResult = await connection.query(checkValidIdxQuery, [targetContents])
+    
+        if(!selectCountResult){
+            //선택항목 조회 실패
+            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+        }
+        else if (selectCountResult[0].total !== targetContentsSize) {
+            //선택항목이 삭제된 콘텐츠가 아니거나 없는 콘텐츠
+            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NO_DELETED_CONTENT))
+        } else {
+            //선택항목들 복원
+            const result = await connection.query(updateDeleteFlagQuery, [targetContents])
+            if (!result) {
+                res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+            }
+        }
+    })
+    if (!restoreTransaction) {
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.RESTORE_CONTENTS_FAIL));
+    } else { 
+        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.RESTORE_CONTENTS_SUCCESS));
+    }
+});
 module.exports = router;
