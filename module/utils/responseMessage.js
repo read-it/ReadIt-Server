@@ -2,8 +2,10 @@ module.exports = {
     NULL_VALUE: "필요한 값이 없습니다",
     DB_ERROR : "DB_ERROR",
 
+    STORAGE_MAIN_SUCCESS: "보관소 조회 성공",
     CATEGORY_SELECT_SUCCESS: "카테고리 조회 성공",
     DELETE_CONTENTS_SUCCESS: "콘텐츠 삭제 성공",
+    READ_CONTENTS_SUCCESS: "콘텐츠 읽음 처리 성공",
     ADD_CONTENTS_SUCCESS: "콘텐츠 추가 성공",
     NO_CONTENT: "게시글이 존재하지 않습니다",
 
@@ -28,6 +30,7 @@ module.exports = {
     
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
     UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
+    CREATED_TOTAL_CATEGORY_FAIL : "전체 카테고리 생성 실패",
     MODIFY_CATE_SUCCESS : "카테고리 이름이 변경되었습니다.",
     ALREADY_CATE_NAME : "카테고리 이름이 이미 존재합니다.",
     INVALID_CATE : "카테고리는 5글자를 넘을 수 없습니다.",
@@ -40,7 +43,7 @@ module.exports = {
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
     INVALID_EMAIL : "잘못된 형식의 이메일입니다",
-    
+    INVALIE_PASSWORD : "잘못된 형식의 비밀번호입니다",
     
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",

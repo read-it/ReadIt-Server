@@ -7,6 +7,7 @@ const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool');
 const jwt = require('../../module/jwt');
 //const upload = require('../../config/multer')
+var isAlphanumeric = require('is-alphanumeric');
 
 router.post('/', async (req, res)=>{
     
@@ -14,6 +15,16 @@ router.post('/', async (req, res)=>{
     function emailIsValid (email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
     }
+
+    //비밀번호 형식 확인하는 function
+    function passwordIsValid(password) {
+        if(password.length<=12 && password.length>=8){
+          return(isAlphanumeric(password));
+        }
+        else{
+          return false
+        }
+      }
 
     //이메일 형식이 아닌 경우 실패
     if(!(emailIsValid(req.body.email))){
@@ -33,8 +44,14 @@ router.post('/', async (req, res)=>{
         if(sameEmailResult[0]){
             res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.ALREADY_USER));
         }else{
+
+            //패스워드 형식이 아닌 경우 실패
+            if(!(passwordIsValid('abcdef123g'))){
+            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_PASSWORD));
+            }
+            else{
             //재입력 이메일이 같지 않을 시 실패
-            if(req.body.password != req.body.rePassword){
+            if(req.body.password != req.body.repassword){
                 res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NOT_SAME_PASSWORD));
             } else {
                 //유저 등록 쿼리
@@ -50,6 +67,14 @@ router.post('/', async (req, res)=>{
                     //유저 등록 실행
                     const insertUserResult = await connection.query(insertUserQuery,[req.body.email, hashedPw, salt]);
 
+                    console.log(insertUserResult)
+            
+                    const loginUserIdx = insertUserResult.insertId
+
+                    //전체 카테고리 생성
+                    const insertCategoryQuery = 'INSERT INTO category (category_name, user_idx) VALUES (?, ?)';
+                    const insertTotalCategoryResult = await connection.query(insertCategoryQuery, ['전체', loginUserIdx]);
+
                     //토큰 생성
                     const tokens = jwt.sign(insertUserResult); 
                     const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken,tokens.idx]);
@@ -58,17 +83,22 @@ router.post('/', async (req, res)=>{
                     } else{
                         //헤더에 토큰 담기
                         res.setHeader("token",tokens.token);
+                        
                     }
                 });
 
                 if(!signupTransaction){
                     res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.CREATED_USER_FAIL));
                 } else{
-                    res.status(200).send(utils.successTrue(statusCode.OK, resMessage.CREATED_USER));
-                }
+
+                    
+                    
+                   
+                        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.CREATED_USER));
+                    
             }   
-        }
+        }}
     }
-}});
+}}});
 
 module.exports = router;
