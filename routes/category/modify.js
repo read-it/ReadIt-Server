@@ -6,9 +6,14 @@ const db = require('../../module/pool');
 const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
+const authUtil = require('../../module/utils/authUtils');
 
-router.put('/:category_idx', async (req, res) => {
-    let modifyQuery1 = `SELECT category_name FROM category WHERE category_idx=?`;
+//카테고리 변경 토큰
+
+router.put('/:category_idx', authUtil.isLoggedin, async (req, res) => {
+    const loginUserIdx = jwt.verify(req.headers.accesstoken).idx;
+
+    let modifyQuery1 = `SELECT category_name FROM category WHERE category_idx=? ADN user_idx=${loginUserIdx}`; //수정
     let modifyResult1 = await db.queryParam_Arr(modifyQuery1, [req.params.category_idx]);
     if(!modifyResult1) {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
