@@ -2,6 +2,7 @@ module.exports = {
     NULL_VALUE: "필요한 값이 없습니다",
     DB_ERROR : "DB_ERROR",
 
+    CONTENTS_CATEGORY_CHANGE_SUCCESS: "콘텐츠 카테고리 변경 성공",
     STORAGE_MAIN_SUCCESS: "보관소 조회 성공",
     CATEGORY_SELECT_SUCCESS: "카테고리 조회 성공",
     DELETE_CONTENTS_SUCCESS: "콘텐츠 삭제 성공",
