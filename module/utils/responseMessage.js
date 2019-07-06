@@ -43,8 +43,13 @@ module.exports = {
     UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
     CREATED_TOTAL_CATEGORY_FAIL : "전체 카테고리 생성 실패",
     MODIFY_CATE_SUCCESS : "카테고리 이름이 변경되었습니다.",
+    CATE_MODIFY_FAIL : "바꿀 수 없는 카테고리입니다.",
     ALREADY_CATE_NAME : "카테고리 이름이 이미 존재합니다.",
     INVALID_CATE : "카테고리는 5글자를 넘을 수 없습니다.",
+    INVALID_CATE_NAME : "유효하지 않은 카테고리 이름입니다.",
+    DELETE_CATE_SUCCESS : "카테고리를 성공적으로 삭제했습니다.",
+    DELETE_CATE_AND_CONT_SUCCESS : "카테고리와 콘텐츠를 성공적으로 삭제했습니다",
+    INVALID_CATE_IDX : "유효하지 않은 카테고리입니다.",
 
     //마이페이지
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
