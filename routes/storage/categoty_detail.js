@@ -48,22 +48,22 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
         switch (req.params.sort) {
             //최신순
             case '1': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.created_date DESC, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.created_date DESC, M.contents_idx')
                 break;
             }
             //오래된 순
             case '2': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.created_date ASEC, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.created_date ASEC, M.contents_idx')
                 break;
             }
             //안읽은 순
             case '3': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.read_flag, M.created_date, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.read_flag, M.created_date, M.contents_idx')
                 break;
             }
             //소요시간 순 -> 수정 필요
             case '4': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.contents_idx DESC')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.contents_idx DESC')
                 break;
             }
         }
