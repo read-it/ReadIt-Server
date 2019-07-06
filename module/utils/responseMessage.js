@@ -11,6 +11,9 @@ module.exports = {
     SCRAP_DELETE_SUCCESS: "콘텐츠 스크랩 제거 성공",
     SCRAP_SUCCESS: "콘텐츠 스크랩 성공",
     NO_CONTENT: "게시글이 존재하지 않습니다",
+    OUT_OF_FIX: "상단 고정 최대 개수를 초과하였습니다.",
+    FIX_SUCCESS: "상단 고정 성공",
+    UN_FIX_SUCCESS: "상단 고정 해제",
 
     INVALID_TOKEN: "잘못된 형식의 토큰입니다.",
     EMPTY_TOKEN: "토큰값이 존재하지 않습니다.",
