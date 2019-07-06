@@ -8,14 +8,9 @@ const db = require('../../module/pool');
 const jwt = require('../../module/jwt');
 //const upload = require('../../config/multer')
 var isAlphanumeric = require('is-alphanumeric');
+var validator = require("email-validator");
 
 router.post('/', async (req, res)=>{
-    
-    //이메일 형식 확인하는 function
-    function emailIsValid (email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    }
-
     //비밀번호 형식 확인하는 function
     function passwordIsValid(password) {
         if(password.length<=12 && password.length>=8){
@@ -25,9 +20,8 @@ router.post('/', async (req, res)=>{
             return false
         }
     }
-
     //이메일 형식이 아닌 경우 실패
-    if(!(emailIsValid(req.body.email))){
+    if(!(validator.validate(req.body.email))){
         res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_EMAIL));
     }
     else{
