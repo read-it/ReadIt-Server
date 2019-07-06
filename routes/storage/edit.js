@@ -31,7 +31,7 @@ router.post('/:type',authUtils.isLoggedin, async (req, res) => {
     `
 
     var editTransaction = await db.Transaction(async(connection) => {
-        let selectCountResult = await db.queryParam_Arr(checkValidIdxQuery, targetContents)
+        let selectCountResult = connection.query(checkValidIdxQuery, [targetContents])
         if(selectCountResult == null){
             res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
         }
@@ -40,14 +40,14 @@ router.post('/:type',authUtils.isLoggedin, async (req, res) => {
         } else {
             var result
             if(req.params.type == 1){
-                result = await db.queryParam_Arr(updateDeleteFlagQuery, targetContents)
+                result = await connection.query(updateDeleteFlagQuery, [targetContents])
                 if (result == null) {
                     res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
                 } else {
                     res.status(200).send(util.successTrue(statusCode.OK,resMessage.DELETE_CONTENTS_SUCCESS))
                 }
             } else if(req.params.type == 2){
-                result = await db.queryParam_Arr(updateReadFlagQuery, targetContents)
+                result = await connection.query(updateReadFlagQuery, [targetContents])
                 if (result == null) {
                     res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
                 } else {

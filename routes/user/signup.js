@@ -50,7 +50,7 @@ router.post('/', async (req, res)=>{
             res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_PASSWORD));
             }
             else{
-            //재입력 이메일이 같지 않을 시 실패
+            //재입력 비밀번호가 같지 않을 시 실패
             if(req.body.password != req.body.repassword){
                 res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NOT_SAME_PASSWORD));
             } else {
@@ -77,7 +77,7 @@ router.post('/', async (req, res)=>{
 
                     //토큰 생성
                     const tokens = jwt.sign(loginUserIdx); 
-                    const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken,tokens.idx]);
+                    const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken, loginUserIdx]);
                     if(!updateRefreshTokenResult){
                         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
                     } else{

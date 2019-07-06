@@ -6,6 +6,7 @@ const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool')
 const jwt = require('../../module/jwt')
 const authUtils = require('../../module/utils/authUtils')
+const moment = require('moment')
 
 router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
     const contentsSelectTransaction = await db.Transaction(async(connection) => {
@@ -48,27 +49,27 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
         switch (req.params.sort) {
             //최신순
             case '1': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.created_date DESC, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.created_date DESC, M.contents_idx')
                 break;
             }
             //오래된 순
             case '2': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.created_date ASEC, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.created_date ASEC, M.contents_idx')
                 break;
             }
             //안읽은 순
             case '3': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.read_flag, M.created_date, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.read_flag, M.created_date, M.contents_idx')
                 break;
             }
             //소요시간 순 -> 수정 필요
             case '4': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_flag DESC,M.contents_idx DESC')
+                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.contents_idx DESC')
                 break;
             }
         }
 
-        let findResult = await db.queryParam_Arr(findContentsByCategory, [queryVariable])
+        let findResult = await connection.query(findContentsByCategory, [queryVariable])
         if (findResult != null){
             var unReadCount = 0;
             var data = {}
@@ -79,6 +80,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             })
             data.total_count = findResult.length
             data.unread_count = unReadCount
+            data.current_date = moment().format('YYYY-MM-DD')
             data.contents_list = findResult
             res.status(200).send(util.successTrue(statusCode.OK,resMessage.CATEGORY_SELECT_SUCCESS,data))
         } else {

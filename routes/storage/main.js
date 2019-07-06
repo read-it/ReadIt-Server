@@ -5,6 +5,7 @@ const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool')
 const authUtils = require('../../module/utils/authUtils')
+const moment = require('moment')
 
 router.get('/',authUtils.isLoggedin,async (req, res) => {
     let selectUserQuery = `
@@ -24,7 +25,7 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
             WHERE C.user_idx = ? AND C.delete_flag = false
             GROUP BY C.contents_idx) M
             ON G.category_idx  = M.category_idx
-            ORDER BY M.fixed_flag DESC, M.created_date DESC
+            ORDER BY M.fixed_date DESC, M.created_date DESC
     `
 
     const getStorageMainTransacion = await db.Transaction(async(connection) => {
@@ -42,6 +43,7 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
                     unReadCount++
                 }
             })
+            data.current_date = moment().format('YYYY-MM-DD')
             data.total_count = selectTotalContentsResult.length
             data.unread_count = unReadCount
             data.contents_list = selectTotalContentsResult
