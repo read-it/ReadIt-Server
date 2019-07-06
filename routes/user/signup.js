@@ -50,7 +50,7 @@ router.post('/', async (req, res)=>{
             res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_PASSWORD));
             }
             else{
-            //재입력 이메일이 같지 않을 시 실패
+            //재입력 비밀번호가 같지 않을 시 실패
             if(req.body.password != req.body.repassword){
                 res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NOT_SAME_PASSWORD));
             } else {
