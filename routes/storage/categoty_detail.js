@@ -68,7 +68,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             }
         }
 
-        let findResult = await db.queryParam_Arr(findContentsByCategory, [queryVariable])
+        let findResult = await connection.query(findContentsByCategory, [queryVariable])
         if (findResult != null){
             var unReadCount = 0;
             var data = {}

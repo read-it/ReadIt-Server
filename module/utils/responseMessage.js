@@ -2,13 +2,20 @@ module.exports = {
     NULL_VALUE: "필요한 값이 없습니다",
     DB_ERROR : "DB_ERROR",
 
+    
     //보관소 
+    CONTENTS_CATEGORY_CHANGE_SUCCESS: "콘텐츠 카테고리 변경 성공",
     STORAGE_MAIN_SUCCESS: "보관소 조회 성공",
     CATEGORY_SELECT_SUCCESS: "카테고리 조회 성공",
     DELETE_CONTENTS_SUCCESS: "콘텐츠 삭제 성공",
     READ_CONTENTS_SUCCESS: "콘텐츠 읽음 처리 성공",
     ADD_CONTENTS_SUCCESS: "콘텐츠 추가 성공",
+    SCRAP_DELETE_SUCCESS: "콘텐츠 스크랩 제거 성공",
+    SCRAP_SUCCESS: "콘텐츠 스크랩 성공",
     NO_CONTENT: "게시글이 존재하지 않습니다",
+    OUT_OF_FIX: "상단 고정 최대 개수를 초과하였습니다.",
+    FIX_SUCCESS: "상단 고정 성공",
+    UN_FIX_SUCCESS: "상단 고정 해제",
 
 
     //토큰
