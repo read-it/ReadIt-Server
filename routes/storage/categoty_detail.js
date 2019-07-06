@@ -6,6 +6,7 @@ const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool')
 const jwt = require('../../module/jwt')
 const authUtils = require('../../module/utils/authUtils')
+const moment = require('moment')
 
 router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
     const contentsSelectTransaction = await db.Transaction(async(connection) => {
@@ -79,6 +80,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             })
             data.total_count = findResult.length
             data.unread_count = unReadCount
+            data.current_date = moment().format('YYYY-MM-DD')
             data.contents_list = findResult
             res.status(200).send(util.successTrue(statusCode.OK,resMessage.CATEGORY_SELECT_SUCCESS,data))
         } else {
