@@ -3,7 +3,6 @@ var router = express.Router();
 const db = require('../../module/pool');
 
 const util = require('../../module/utils/utils');
-const authUtil = require('../../module/utils/authUtils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 
@@ -35,8 +34,8 @@ router.post('/', async (req, res) => {
             }else{
             //클라이언트에게 refreshToken을 안전한 저장소에 저장해달라고 설명
             //헤더에 액세스토큰 넣기
-            res.setHeader("accesstoken",tokens.token);
-            res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS));
+                res.setHeader("accesstoken",tokens.token);
+                res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS));
             }
         }
         else{
