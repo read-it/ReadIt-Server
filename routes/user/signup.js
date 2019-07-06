@@ -19,12 +19,12 @@ router.post('/', async (req, res)=>{
     //비밀번호 형식 확인하는 function
     function passwordIsValid(password) {
         if(password.length<=12 && password.length>=8){
-          return(isAlphanumeric(password));
+            return(isAlphanumeric(password));
         }
         else{
-          return false
+            return false
         }
-      }
+    }
 
     //이메일 형식이 아닌 경우 실패
     if(!(emailIsValid(req.body.email))){
@@ -76,14 +76,13 @@ router.post('/', async (req, res)=>{
                     const insertTotalCategoryResult = await connection.query(insertCategoryQuery, ['전체', loginUserIdx]);
 
                     //토큰 생성
-                    const tokens = jwt.sign(insertUserResult); 
-                    const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken,tokens.idx]);
+                    const tokens = jwt.sign(loginUserIdx); 
+                    const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken, loginUserIdx]);
                     if(!updateRefreshTokenResult){
                         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
                     } else{
                         //헤더에 토큰 담기
-                        res.setHeader("token",tokens.token);
-                        
+                        res.setHeader("accesstoken",tokens.token);
                     }
                 });
 
@@ -91,9 +90,9 @@ router.post('/', async (req, res)=>{
                     res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.CREATED_USER_FAIL));
                 } else{
                     res.status(200).send(utils.successTrue(statusCode.OK, resMessage.CREATED_USER));
-                }   
-            }
-        }
+                    
+            }   
+        }}
     }
 }}});
 

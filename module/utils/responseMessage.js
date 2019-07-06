@@ -2,20 +2,25 @@ module.exports = {
     NULL_VALUE: "필요한 값이 없습니다",
     DB_ERROR : "DB_ERROR",
 
+    //보관소 
+    STORAGE_MAIN_SUCCESS: "보관소 조회 성공",
     CATEGORY_SELECT_SUCCESS: "카테고리 조회 성공",
     DELETE_CONTENTS_SUCCESS: "콘텐츠 삭제 성공",
+    READ_CONTENTS_SUCCESS: "콘텐츠 읽음 처리 성공",
     ADD_CONTENTS_SUCCESS: "콘텐츠 추가 성공",
     NO_CONTENT: "게시글이 존재하지 않습니다",
 
+
+    //토큰
     INVALID_TOKEN: "잘못된 형식의 토큰입니다.",
     EMPTY_TOKEN: "토큰값이 존재하지 않습니다.",
     EXPRIED_TOKEN: "만료된 토큰입니다.",
     EMPTY_REFRESH_TOKEN: "재발급 토큰이 존재하지 않습니다.",
     CREATE_TOKEN: "토큰 발급 완료.",
     REFRESH_TOKEN: "토큰 재발급 완료.",
-
     NO_SELECT_AUTHORITY: "조회 권한 없음.",
 
+    //회원
     OUT_OF_VALUE: "파라미터 값이 잘못되었습니다",
     ID_OR_PW_NULL_VALUE: "아이디/비밀번호 값이 없습니다.",
     CREATED_USER: "회원 가입 성공",
@@ -26,6 +31,7 @@ module.exports = {
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
     LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
     
+    //카테고리
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
     UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
     CREATED_TOTAL_CATEGORY_FAIL : "전체 카테고리 생성 실패",
@@ -33,8 +39,18 @@ module.exports = {
     ALREADY_CATE_NAME : "카테고리 이름이 이미 존재합니다.",
     INVALID_CATE : "카테고리는 5글자를 넘을 수 없습니다.",
 
+    //마이페이지
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
+
+    GET_HIGHLIGHT_LIST_SUCCESS: "하이라이트 리스트 조회 성공",
+    GET_HIGHLIGHT_LIST_FAIL: "하이라이트 리스트 조회 실패",
+
+    GET_DELETED_CONTENTS_SUCCESS: "삭제된 목록 조회 성공",
+    GET_DELETED_CONTENTS_FAIL: "삭제된 목록 조회 삭제",
+    NO_DELETED_CONTENT: "삭제된 항목이 아닙니다",
+    RESTORE_CONTENTS_SUCCESS: "삭제항목 복원 성공",
+    RESTORE_CONTENTS_FAIL: "삭제항목 복원 실패",
 
     NOT_SAME_PASSWORD : "재입력된 비밀번호가 일치하지 않습니다",
 
