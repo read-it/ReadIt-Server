@@ -42,9 +42,11 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
             contentsInfo.contentsUrl,contentsInfo.contentsSiteName,category_idx,req.decoded.idx])
         if(insertContentsResult != null){
             console.log(insertContentsResult)
+            console.log(contentsInfo)
             res.status(200).send(util.successTrue(statusCode.OK,resMessage.ADD_CONTENTS_SUCCESS))
         } else {
             console.log(insertContentsResult)
+            console.log(contentsInfo)
             res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
         }
 
