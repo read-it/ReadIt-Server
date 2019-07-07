@@ -13,13 +13,12 @@ router.post('/', async (req, res) => {
     //회원 이메일로 해당 유저 정보 가져오기
     let selectUserQuery = 'SELECT * FROM user WHERE email = ?'
     let userResult = await db.queryParam_Arr(selectUserQuery, [req.body.email]);
-    
-    if(!userResult) {
+    if(!(userResult[0])) {
         //회원이 아닐시
-        console.log('userResult 없음');
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.LOGIN_FAIL));
         
-    } else {
+    }
+    else {
         const userSalt = userResult[0].salt;
         const inputHashedPw = await crypto.pbkdf2(req.body.password.toString('base64'), userSalt, 1000, 32, 'SHA512');
 
