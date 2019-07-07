@@ -13,13 +13,12 @@ router.post('/', async (req, res) => {
     //회원 이메일로 해당 유저 정보 가져오기
     let selectUserQuery = 'SELECT * FROM user WHERE email = ?'
     let userResult = await db.queryParam_Arr(selectUserQuery, [req.body.email]);
-    
-    if(!userResult) {
+    if(!(userResult[0])) {
         //회원이 아닐시
-        console.log('userResult 없음');
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.LOGIN_FAIL));
         
-    } else {
+    }
+    else {
         const userSalt = userResult[0].salt;
         const inputHashedPw = await crypto.pbkdf2(req.body.password.toString('base64'), userSalt, 1000, 32, 'SHA512');
 
@@ -29,7 +28,7 @@ router.post('/', async (req, res) => {
             const tokens = jwt.sign(userResult[0].user_idx);
             let updateTokenQuery = 'UPDATE user SET refresh_token = ? WHERE email = ?'
             let updateTokenResult = await db.queryParam_Parse(updateTokenQuery, [tokens.refreshToken,req.body.email]);
-            if(!updateTokenResult){
+            if(!(updateTokenResult[0])){
                 res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
             }else{
             //클라이언트에게 refreshToken을 안전한 저장소에 저장해달라고 설명
