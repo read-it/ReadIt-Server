@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const crypto = require('crypto-promise');
-const utils = require('../../module/utils/utils');
+const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool');
@@ -40,7 +40,7 @@ router.post('/', async (req, res)=>{
         }else{
 
             //패스워드 형식이 아닌 경우 실패
-            if(!(passwordIsValid('abcdef123g'))){
+            if(!(passwordIsValid(req.body.password))){
             res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_PASSWORD));
             }
             else{
@@ -74,15 +74,10 @@ router.post('/', async (req, res)=>{
                     const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken, loginUserIdx]);
                     if(!updateRefreshTokenResult){
                         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+                    }else{
+                        res.status(200).send(util.successTrue(statusCode.OK, resMessage.CREATED_USER,  {accesstoken : tokens.token}));
                     }
                 });
-
-                if(!signupTransaction){
-                    res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.CREATED_USER_FAIL));
-                } else{
-                    res.status(200).send(utils.successTrue(statusCode.OK, resMessage.CREATED_USER),{accesstoken : QueryResult});
-                    
-            }   
         }}
     }
 }}});
