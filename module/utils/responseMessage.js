@@ -17,6 +17,9 @@ module.exports = {
     FIX_SUCCESS: "상단 고정 성공",
     UN_FIX_SUCCESS: "상단 고정 해제",
 
+    GET_SEARCH_RESULT_SUCCESS: "검색 결과 조회 성공",
+    GET_SEARCH_RESULT_FAIL: "검색 결과 조회 실패",
+
 
     //토큰
     INVALID_TOKEN: "잘못된 형식의 토큰입니다.",
