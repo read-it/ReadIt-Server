@@ -74,16 +74,13 @@ router.post('/', async (req, res)=>{
                     const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken, loginUserIdx]);
                     if(!updateRefreshTokenResult){
                         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-                    } else{
-                        //헤더에 토큰 담기
-                        res.setHeader("accesstoken",tokens.token);
                     }
                 });
 
                 if(!signupTransaction){
                     res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.CREATED_USER_FAIL));
                 } else{
-                    res.status(200).send(utils.successTrue(statusCode.OK, resMessage.CREATED_USER));
+                    res.status(200).send(utils.successTrue(statusCode.OK, resMessage.CREATED_USER),{accesstoken : QueryResult});
                     
             }   
         }}
