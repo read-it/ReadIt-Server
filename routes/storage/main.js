@@ -19,12 +19,14 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
     WHERE user_idx = ?
     `
     let selectTotalContentsQuery = `
-    SELECT G.category_name, M.* FROM category G INNER JOIN
-            (SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+    SELECT  R.*,G.category_name FROM category G INNER JOIN
+			(SELECT M.*, if(isnull(S.scrap_date),false,true) as scrap_flag FROM scrap as S RIGHT JOIN 
+			(SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
             ON C.contents_idx = H.contents_idx
             WHERE C.user_idx = ? AND C.delete_flag = false
             GROUP BY C.contents_idx) M
-            ON G.category_idx  = M.category_idx
+            ON S.contents_idx = M.contents_idx) R
+            ON G.category_idx = R.category_idx
             ORDER BY M.fixed_date DESC, M.created_date DESC
     `
 

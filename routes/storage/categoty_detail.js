@@ -18,14 +18,15 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             `
 
         let findContentsByCategory =
-            `
-            SELECT G.category_name, M.* FROM category G INNER JOIN
-            (SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+            `SELECT  R.*,G.category_name FROM category G INNER JOIN
+			(SELECT M.*, if(isnull(S.scrap_date),false,true) as scrap_flag FROM scrap as S RIGHT JOIN 
+			(SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
             ON C.contents_idx = H.contents_idx
             GROUP BY C.contents_idx) M
-            ON G.category_idx  = M.category_idx
-            WHERE G.category_idx = ? AND M.delete_flag = false
-            ORDER BY`
+            ON S.contents_idx = M.contents_idx) R
+            ON G.category_idx = R.category_idx
+            WHERE G.category_idx = ? AND R.delete_flag = false
+            ORDER BY `
         
         var queryVariable
         var selectCategoryNameResult = await connection.query(selectCategoryNameQuery,[req.params.category_idx])
@@ -33,14 +34,16 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.BAD_REQUEST))
         } else if(selectCategoryNameResult[0].category_name == '전체'){
             findContentsByCategory = 
-            `
-            SELECT G.category_name, M.* FROM category G INNER JOIN
-            (SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+            `SELECT  R.*,G.category_name FROM category G INNER JOIN
+			(SELECT M.*, if(isnull(S.scrap_date),false,true) as scrap_flag FROM scrap as S RIGHT JOIN 
+			(SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
             ON C.contents_idx = H.contents_idx
             WHERE C.user_idx = ? AND C.delete_flag = false
             GROUP BY C.contents_idx) M
-            ON G.category_idx  = M.category_idx
+            ON S.contents_idx = M.contents_idx) R
+            ON G.category_idx = R.category_idx
             ORDER BY`
+
             queryVariable = req.decoded.idx
         } else {
             queryVariable = req.params.category_idx
@@ -49,22 +52,22 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
         switch (req.params.sort) {
             //최신순
             case '1': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.created_date DESC, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.created_date DESC, R.contents_idx')
                 break;
             }
             //오래된 순
             case '2': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.created_date ASEC, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.created_date ASEC, R.contents_idx')
                 break;
             }
             //안읽은 순
             case '3': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.read_flag, M.created_date, M.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.read_flag, R.created_date, R.contents_idx')
                 break;
             }
             //소요시간 순 -> 수정 필요
             case '4': {
-                findContentsByCategory = findContentsByCategory.concat(' M.fixed_date DESC,M.contents_idx DESC')
+                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.contents_idx DESC')
                 break;
             }
         }
