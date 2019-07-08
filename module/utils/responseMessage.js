@@ -77,7 +77,9 @@ module.exports = {
     
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
-    EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공"
+    EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공",
+
+    NOT_SAME_REFRESH_TOKEN : "refreshtoken이 일치하지 않습니다"
 
     
 };
