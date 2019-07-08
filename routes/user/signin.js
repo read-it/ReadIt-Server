@@ -32,9 +32,9 @@ router.post('/', async (req, res) => {
                 res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
             }else{
             //클라이언트에게 refreshToken을 안전한 저장소에 저장해달라고 설명
-            //헤더에 액세스토큰 넣기
-                res.setHeader("accesstoken",tokens.token);
-                res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS));
+            
+                // res.setHeader("accesstoken",tokens.token); (헤더에 넣어줄 경우)
+                res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS), {accesstoken : QueryResult} );
             }
         }
         else{
