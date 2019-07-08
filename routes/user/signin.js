@@ -28,13 +28,12 @@ router.post('/', async (req, res) => {
             const tokens = jwt.sign(userResult[0].user_idx);
             let updateTokenQuery = 'UPDATE user SET refresh_token = ? WHERE email = ?'
             let updateTokenResult = await db.queryParam_Parse(updateTokenQuery, [tokens.refreshToken,req.body.email]);
-            if(!(updateTokenResult[0])){
+            if(!(updateTokenResult)){
                 res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
             }else{
             //클라이언트에게 refreshToken을 안전한 저장소에 저장해달라고 설명
-            
                 // res.setHeader("accesstoken",tokens.token); (헤더에 넣어줄 경우)
-                res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS), {accesstoken : QueryResult} );
+                res.status(200).send(util.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS,  {accesstoken : tokens.token}));
             }
         }
         else{
