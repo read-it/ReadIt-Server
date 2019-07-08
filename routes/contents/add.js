@@ -24,11 +24,12 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
     let result = await ogs(options)
 
     if(result.success){
-
-        contentsInfo.contentsSiteName = result.data.ogSiteName
-        contentsInfo.contentsUrl = result.data.ogUrl
+        contentsInfo.contentsUrl = contents_url
+        contentsInfo.contentsSiteName = cutSiteUrl(contents_url)
         contentsInfo.contentsTitle = result.data.ogTitle,
         contentsInfo.contentsImage = result.data.ogImage.url
+        
+        console.log(contentsInfo)
 
         let insertContentsQuery = 
         `
@@ -42,9 +43,11 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
             contentsInfo.contentsUrl,contentsInfo.contentsSiteName,category_idx,req.decoded.idx])
         if(insertContentsResult != null){
             console.log(insertContentsResult)
+            console.log(contentsInfo)
             res.status(200).send(util.successTrue(statusCode.OK,resMessage.ADD_CONTENTS_SUCCESS))
         } else {
             console.log(insertContentsResult)
+            console.log(contentsInfo)
             res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
         }
 
@@ -52,5 +55,24 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.BAD_REQUEST))
     }
 })
+
+function cutSiteUrl(url){
+    var hostname;
+    if (url.indexOf("//") > -1) {
+        hostname = url.split('/')[2];
+    }
+    else {
+        hostname = url.split('/')[0];
+    }
+
+    //find & remove port number
+    var cuttingStr = hostname.split('.')[0]
+    hostname = hostname.replace(cuttingStr.concat('.'),'')
+    hostname = hostname.split(':')[0];
+    //find & remove "?"
+    hostname = hostname.split('?')[0];
+
+    return hostname;
+}
 
 module.exports = router
