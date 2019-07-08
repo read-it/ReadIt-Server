@@ -75,7 +75,7 @@ router.post('/', async (req, res)=>{
                     if(!updateRefreshTokenResult){
                         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
                     }else{
-                        res.status(200).send(util.successTrue(statusCode.OK, resMessage.CREATED_USER,  {accesstoken : tokens.token}));
+                        res.status(200).send(util.successTrue(statusCode.OK, resMessage.CREATED_USER, {accesstoken : tokens.token, refreshtoken : tokens.refreshToken} ));
                     }
                 });
         }}
