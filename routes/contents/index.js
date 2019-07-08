@@ -6,5 +6,6 @@ router.use('/change',require('./change'))
 router.use('/delete',require('./delete'))
 router.use('/scrap',require('./scrap'))
 router.use('/fix',require('./fix'))
+router.use('/search', require('./search'))
 
 module.exports = router
