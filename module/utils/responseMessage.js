@@ -16,6 +16,7 @@ module.exports = {
     OUT_OF_FIX: "상단 고정 최대 개수를 초과하였습니다.",
     FIX_SUCCESS: "상단 고정 성공",
     UN_FIX_SUCCESS: "상단 고정 해제",
+    CONTENS_READ_SUCCESS: "콘텐츠 조회 성공",
 
     GET_SEARCH_RESULT_SUCCESS: "검색 결과 조회 성공",
     GET_SEARCH_RESULT_FAIL: "검색 결과 조회 실패",
