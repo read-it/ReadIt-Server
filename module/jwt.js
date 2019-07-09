@@ -3,26 +3,24 @@ const jwt = require('jsonwebtoken');
 const secretOrPrivateKey = "jwtSecretKey!";
 const options = {
     algorithm: "HS256",
-    expiresIn: "1h",
-    issuer: "genie"
+    expiresIn: "720h",
+    issuer: "Readit"
 };
 const refreshOptions = {
     algorithm: "HS256",
     expiresIn: "24h * 14",
-    issuer: "genie"
+    issuer: "Readit"
 };
 
 module.exports = {
-    sign: (user) => {
+    sign: (insertIdx) => {
         const payload = {
-            idx: user.idx,
-            grade: user.grade,
-            name: user.name
+            idx: insertIdx
         };
 
         const result = {
             token: jwt.sign(payload, secretOrPrivateKey, options),
-            // refreshToken: randtoken.uid(256)
+            refreshToken: randtoken.uid(256)
             // ^ option
         };
         //refreshToken을 만들 때에도 다른 키를 쓰는게 좋다.
@@ -47,11 +45,9 @@ module.exports = {
         }
         return decoded;
     },
-    refresh: (user) => {
+    refresh: (insertIdx) => {
         const payload = {
-            idx: user.idx,
-            grade: user.grade,
-            name: user.name
+            idx: insertIdx
         };
 
         return jwt.sign(payload, secretOrPrivateKey, options);
