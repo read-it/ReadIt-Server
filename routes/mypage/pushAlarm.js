@@ -1,7 +1,7 @@
 // var express = require('express');
 // var router = express.Router();
 
-// const utils = require('../../module/utils/utils');
+// const util = require('../../module/utils/utils');
 // const statusCode = require('../../module/utils/statusCode');
 // const resMessage = require('../../module/utils/responseMessage');
 // const authUtils = require("../../module/utils/authUtils");
