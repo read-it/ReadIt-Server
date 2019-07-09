@@ -34,13 +34,15 @@ router.get('/', authUtil.isLoggedin, async(req, res) => {
 	}
 })
 
-router.get('/:category_idx', authUtil.isLoggedin, async(req, res) => {
+router.get('/:default_idx/:category_idx', authUtil.isLoggedin, async(req, res) => {
+
+	if(!req.params.default_idx){
+		res.status(200).send(util.successFalse(statusCode.NO_CONTENT))
+	} else if(!req.params.category_idx){
+		res.status(200).send(util.successFalse(statusCode.NO_CONTENT))
+	}
 
 	const userIdx = req.decoded.idx;
-
-	//유저의 전체 카테고리 인덱스 가져오기
-	const getDefaultIdxQuery = `SELECT category_idx FROM category WHERE user_idx = ${userIdx} AND category_name = "전체"`;
-	const getDefaultIdxResult = await db.queryParam_None(getDefaultIdxQuery);
 
 	//유저의 전체 콘텐츠 가져오기
 	let getContentsListQuery = 
@@ -53,16 +55,11 @@ router.get('/:category_idx', authUtil.isLoggedin, async(req, res) => {
 	WHERE S.user_idx = ${userIdx}
 	`;
 
-	if(!getDefaultIdxResult){
-		res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-	} else {
 		//검색 카테고리가 전체인지 세부 카테고리인지 확인
-		if(getDefaultIdxResult[0].category_idx != req.params.category_idx){
+		if(req.params.default_idx != req.params.category_idx){
 
 			//세부 카테고리일경우 쿼리문 추가
 			getContentsListQuery = getContentsListQuery + ` AND S.category_idx = ${req.params.category_idx}`;
-		
-			console.log(getContentsListQuery)
 		}
 		//검색할 콘텐츠 리스트 가져오기
 		const getContentsListResult = await db.queryParam_None(getContentsListQuery);
@@ -85,7 +82,7 @@ router.get('/:category_idx', authUtil.isLoggedin, async(req, res) => {
 			}
 
 			res.status(200).send(util.successTrue(statusCode.OK, resMessage.GET_SEARCH_RESULT_SUCCESS, findContentsList));
-		}
+
 	}
 })
 module.exports = router

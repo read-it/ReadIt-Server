@@ -41,6 +41,8 @@ module.exports = {
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
     LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
+
+    LOGOUT_SUCCESS: "로그아웃 성공",
     
     //카테고리
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
@@ -73,7 +75,7 @@ module.exports = {
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
     INVALID_EMAIL : "잘못된 형식의 이메일입니다",
-    INVALIE_PASSWORD : "잘못된 형식의 비밀번호입니다",
+    INVALID_PASSWORD : "잘못된 형식의 비밀번호입니다",
     
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
