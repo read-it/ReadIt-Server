@@ -35,7 +35,7 @@ const util = {
     },
     insertAfterCreateDateAtResult: (selectResult) => {
         for(i = 0;i<selectResult.length;i++){
-            selectResult[i].afterCreateDate = util.getAfterCreateDate(selectResult[i].created_date)
+            selectResult[i].after_create_date = util.getAfterCreateDate(selectResult[i].created_date)
         }
         return selectResult
     }
