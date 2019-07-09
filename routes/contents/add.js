@@ -10,6 +10,10 @@ const authUtils = require('../../module/utils/authUtils')
 router.post('/',authUtils.isLoggedin,async (req, res) => {
     let category_idx = req.body.category_idx
     let contents_url = req.body.contents_url
+
+    // if(category_idx == null || contents_url == null){
+    //     return res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.OUT_OF_VALUE))
+    // }
     
     var options = {}
     var contentsInfo = {
