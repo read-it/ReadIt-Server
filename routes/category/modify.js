@@ -8,12 +8,10 @@ const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 const authUtil = require('../../module/utils/authUtils');
 
-//카테고리 변경 토큰
-
 router.put('/:category_idx', authUtil.isLoggedin, async (req, res) => {
     const user = req.decoded.idx;
 
-    let modifyQuery1 = `SELECT category_name FROM category WHERE category_idx=?`; //수정
+    let modifyQuery1 = `SELECT c.category_name FROM category AS c WHERE category_idx=? AND c.user_idx = ${user}`;
     let modifyResult1 = await db.queryParam_Arr(modifyQuery1, [req.params.category_idx,user]);
     if(!modifyResult1) {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
