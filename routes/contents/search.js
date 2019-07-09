@@ -36,6 +36,10 @@ router.get('/', authUtil.isLoggedin, async(req, res) => {
 
 router.get('/:category_idx', authUtil.isLoggedin, async(req, res) => {
 
+	if(!category_idx){
+		res.status(200).send(util.successFalse(statusCode.NO_CONTENT))
+	}
+
 	const userIdx = req.decoded.idx;
 
 	//유저의 전체 카테고리 인덱스 가져오기
@@ -61,8 +65,6 @@ router.get('/:category_idx', authUtil.isLoggedin, async(req, res) => {
 
 			//세부 카테고리일경우 쿼리문 추가
 			getContentsListQuery = getContentsListQuery + ` AND S.category_idx = ${req.params.category_idx}`;
-		
-			console.log(getContentsListQuery)
 		}
 		//검색할 콘텐츠 리스트 가져오기
 		const getContentsListResult = await db.queryParam_None(getContentsListQuery);
