@@ -17,6 +17,7 @@ module.exports = {
     FIX_SUCCESS: "상단 고정 성공",
     UN_FIX_SUCCESS: "상단 고정 해제",
     CONTENS_READ_SUCCESS: "콘텐츠 조회 성공",
+    CATEGORY_ORDER_CHANGE_SUCCESS: "카테고리 순서 변경 성공",
 
     GET_SEARCH_RESULT_SUCCESS: "검색 결과 조회 성공",
     GET_SEARCH_RESULT_FAIL: "검색 결과 조회 실패",

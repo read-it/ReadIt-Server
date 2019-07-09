@@ -17,6 +17,7 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
     SELECT category_idx, category_name
     FROM category
     WHERE user_idx = ?
+    ORDER BY category_order DESC
     `
     let selectTotalContentsQuery = `
     SELECT  R.*,G.category_name FROM category G INNER JOIN
