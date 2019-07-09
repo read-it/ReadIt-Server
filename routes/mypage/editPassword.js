@@ -45,8 +45,7 @@ router.put('/', authUtils.isLoggedin, async (req, res) => {
                 if(!editPasswordResult){
                     res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.EDIT_PASSWORD_FAIL));
                 } else{
-                    res.setHeader("accesstoken",tokens.token);
-                    res.status(200).send(utils.successTrue(statusCode.OK, resMessage.EDIT_PASSWORD_SUCCESS));
+                    res.status(200).send(utils.successTrue(statusCode.OK, resMessage.EDIT_PASSWORD_SUCCESS, {accesstoken : tokens.token, refreshtoken : tokens.refreshToken}));
                 }
             }
 

@@ -79,7 +79,8 @@ module.exports = {
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
     EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공",
 
-    NOT_SAME_REFRESH_TOKEN : "refreshtoken이 일치하지 않습니다"
+    NOT_SAME_REFRESH_TOKEN : "refreshtoken이 일치하지 않습니다",
+    SET_READIT_TIME : "리딧타임 설정이 완료되었습니다"
 
     
 };
