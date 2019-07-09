@@ -75,7 +75,7 @@ module.exports = {
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
     INVALID_EMAIL : "잘못된 형식의 이메일입니다",
-    INVALIE_PASSWORD : "잘못된 형식의 비밀번호입니다",
+    INVALID_PASSWORD : "잘못된 형식의 비밀번호입니다",
     
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
