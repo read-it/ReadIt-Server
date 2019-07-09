@@ -80,7 +80,10 @@ module.exports = {
     EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공",
 
     NOT_SAME_REFRESH_TOKEN : "refreshtoken이 일치하지 않습니다",
-    SET_READIT_TIME : "리딧타임 설정이 완료되었습니다"
+    SET_READIT_TIME : "리딧타임 설정이 완료되었습니다",
+    BAD_PARAMETER : "잘못된 파라미터를 입력하였습니다",
+    END_READIT_TIME : "리딧타임 설정을 취소합니다",
+    BAD_TIME : "잘못된 시간을 입력하였습니다"
 
     
 };
