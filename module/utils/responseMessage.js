@@ -16,6 +16,11 @@ module.exports = {
     OUT_OF_FIX: "상단 고정 최대 개수를 초과하였습니다.",
     FIX_SUCCESS: "상단 고정 성공",
     UN_FIX_SUCCESS: "상단 고정 해제",
+    CONTENS_READ_SUCCESS: "콘텐츠 조회 성공",
+    CATEGORY_ORDER_CHANGE_SUCCESS: "카테고리 순서 변경 성공",
+
+    GET_SEARCH_RESULT_SUCCESS: "검색 결과 조회 성공",
+    GET_SEARCH_RESULT_FAIL: "검색 결과 조회 실패",
 
 
     //토큰
@@ -37,6 +42,8 @@ module.exports = {
     LOGIN_SUCCESS: "로그인 성공",
     ALREADY_USER: "이미 사용중인 이메일 입니다.",
     LOGIN_FAIL: "존재하지 않는 이메일 이거나 비밀번호가 맞지 않습니다",
+
+    LOGOUT_SUCCESS: "로그아웃 성공",
     
     //카테고리
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
@@ -69,11 +76,14 @@ module.exports = {
     CHANGE_SUCCESSS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
     INVALID_EMAIL : "잘못된 형식의 이메일입니다",
-    INVALIE_PASSWORD : "잘못된 형식의 비밀번호입니다",
+    INVALID_PASSWORD : "잘못된 형식의 비밀번호입니다",
     
     WRONG_PASSWORD: "비밀번호가 틀림",
     EDIT_PASSWORD_FAIL: "비밀번호 변경 실패",
-    EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공"
+    EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공",
+
+    NOT_SAME_REFRESH_TOKEN : "refreshtoken이 일치하지 않습니다",
+    SET_READIT_TIME : "리딧타임 설정이 완료되었습니다"
 
     
 };
