@@ -70,12 +70,14 @@ function cutSiteUrl(url){
     }
 
     //find & remove port number
-    var cuttingStr = hostname.split('.')[0]
-    hostname = hostname.replace(cuttingStr.concat('.'),'')
     hostname = hostname.split(':')[0];
     //find & remove "?"
     hostname = hostname.split('?')[0];
-
+    if(hostname.split('.').lenght > 2){
+        var cuttingStr = hostname.split('.')[0]
+        hostname = hostname.replace(cuttingStr.concat('.'),'')
+    }
+    
     return hostname;
 }
 
