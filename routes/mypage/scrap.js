@@ -14,13 +14,17 @@ router.get('/scraplist', authUtil.isLoggedin, async (req, res) => {
     const userIdx = req.decoded.idx;
 
     //로그인 유저가 스크랩한 콘텐츠 가져오기
-    const getScrapListQuery = `SELECT * FROM scrap S LEFT JOIN
-                                (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt 
-                                    FROM contents C LEFT JOIN highlight H
-                                    ON C.contents_idx=H.contents_idx
-                                    GROUP BY C.contents_idx) M
-                                ON S.contents_idx = M.contents_idx
-                                WHERE M.user_idx = ${userIdx} ORDER BY scrap_date DESC`;
+    const getScrapListQuery = `
+    SELECT S.*, R.* FROM scrap S INNER JOIN
+        (SELECT  M.*,G.category_name FROM category G JOIN
+            (SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+                ON C.contents_idx = H.contents_idx
+                WHERE C.user_idx = ${userIdx} AND C.delete_flag = false
+                GROUP BY C.contents_idx) M
+        ON G.category_idx = M.category_idx) R
+    ON S.contents_idx = R.contents_idx
+    ORDER BY S.scrap_date DESC
+    `;
     
     console.log(getScrapListQuery);
     
