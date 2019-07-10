@@ -26,39 +26,43 @@ router.post('/',authUtil.isLoggedin ,async (req, res) => {
     const user = req.decoded.idx;
     const contentsArray = req.body.contents_idx.toString();
 
-    const selectQuery = `SELECT c.category_idx, c.category_name FROM category AS c WHERE c.user_idx = ${user} AND c.category_name = ?`;
+    const selectQuery = `SELECT category_idx, category_name FROM category WHERE user_idx = ? AND category_name = ?`;
 
     const insertQuery = `INSERT INTO category (category_name, user_idx) VALUES (?,?)`;  
     //const updateQuery =`UPDATE contents SET category_idx = ? WHERE contents_idx = ?;`
     const updateQuery = `UPDATE contents SET category_idx = ? WHERE FIND_IN_SET(contents_idx, ?)`;
 
+    const selectResult = await db.queryParam_Arr(selectQuery, [user, req.body.category_name]);
     
-
-    const insertTransaction = await db.Transaction(async(connection) => {
-        const selectResult = await connection.query(selectQuery, [user, req.body.category_name]);
-        const insertResult = await connection.query(insertQuery, [req.body.category_name, user]);
-        const idx = insertResult.insertId;
-        const updateResult = await connection.query(updateQuery, [idx, contentsArray]);
-
-        // 카테고리 이름 중복 체크
+    console.log(selectResult[0])
+    // 카테고리 이름 중복 체크
+    if(!selectResult) {
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+    }else if(selectResult[0]){
+        res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.ALREADY_CATE_NAME));
+    } else {
         
-        if(!selectResult) {
-            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-        } else {
-            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.ALREADY_CATE_NAME));
+        const insertTransaction = await db.Transaction(async(connection) => {
+            const insertResult = await connection.query(insertQuery, [req.body.category_name, user]);
+            const idx = insertResult.insertId;
+
+            if(contentsArray.length!=0){
+                const updateResult = await connection.query(updateQuery, [idx, contentsArray]);
+            }
+
+            // try{
+            //     // for(var i=0; i<updateResult)
+            // } catch {
+            //     // 에러 부분 db rollback
+            // }
+            
+        });
+
+        if (!insertTransaction) {
+            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
+        } else { 
+            res.status(200).send(utils.successTrue(statusCode.CREATED, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS, ));
         }
-
-        // try{
-        //     // for(var i=0; i<updateResult)
-        // } catch {
-        //     // 에러 부분 db rollback
-        // }
-        
-    });
-    if (!insertTransaction) {
-        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
-    } else { 
-        res.status(200).send(utils.successTrue(statusCode.CREATED, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS, ));
     }
 });
 
