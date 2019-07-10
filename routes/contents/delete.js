@@ -36,7 +36,7 @@ router.put('/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     } else if(updateResult.affectedRows != 1){
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.OUT_OF_VALUE))
     } else {
-        res.status(200).send(util.successTrue(statusCode(statusCode.OK,resMessage.DELETE_CONTENTS_SUCCESS)))
+        res.status(200).send(util.successTrue(statusCode.statusCode.OK,resMessage.DELETE_CONTENTS_SUCCESS))
     }
 })
 
