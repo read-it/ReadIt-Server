@@ -32,11 +32,11 @@ router.put('/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     var updateResult = await db.queryParam_Arr(updateContentsQuery,[req.params.contents_idx])
 
     if(updateResult == null){
-        res.status(200).send(util.successFalse(statusCode(statusCode.DB_ERROR,resMessage.DB_ERROR)))
+        res.status(200).send(util.successFalse(statusCodeDB_ERROR,resMessage.DB_ERROR))
     } else if(updateResult.affectedRows != 1){
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.OUT_OF_VALUE))
     } else {
-        res.status(200).send(util.successTrue(statusCode.statusCode.OK,resMessage.DELETE_CONTENTS_SUCCESS))
+        res.status(200).send(util.successTrue(statusCode.OK,resMessage.DELETE_CONTENTS_SUCCESS))
     }
 })
 
