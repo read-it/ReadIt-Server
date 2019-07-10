@@ -25,7 +25,7 @@ router.put('/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     if(selectResult == 0){
         return res.status(200).send(util.successFalse(statusCode.successFalse,resMessage.DB_ERROR))
     }
-    else if(seletctResult[0].count != 1){
+    else if(selectResult[0].count != 1){
         return res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.OUT_OF_VALUE))
     }
 
