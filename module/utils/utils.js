@@ -38,6 +38,22 @@ const util = {
             selectResult[i].after_create_date = util.getAfterCreateDate(selectResult[i].created_date)
         }
         return selectResult
+    },
+    cutSiteUrl: (url) => {
+        var hostname;
+        if (url.indexOf("//") > -1) {
+            hostname = url.split('/')[2];
+        }
+        else {
+            hostname = url.split('/')[0];
+        }
+        hostname = hostname.split(':')[0];
+        hostname = hostname.split('?')[0];
+        if(hostname.split('.').lenght > 2){
+            var cuttingStr = hostname.split('.')[0]
+            hostname = hostname.replace(cuttingStr.concat('.'),'')
+        }
+        return hostname;
     }
 };
 

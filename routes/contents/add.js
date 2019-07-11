@@ -1,12 +1,13 @@
-const express = require('express')
-const router = express.Router()
-const ogs = require('open-graph-scraper')
-const moment = require('moment')
+const express = require('express');
+const router = express.Router();
+const ogs = require('open-graph-scraper');
+const moment = require('moment');
 const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
-const db = require('../../module/pool')
-const authUtils = require('../../module/utils/authUtils')
+const db = require('../../module/pool');
+const authUtils = require('../../module/utils/authUtils');
+
 router.post('/',authUtils.isLoggedin,async (req, res) => {
     let category_idx = req.body.category_idx
     let contents_url = req.body.contents_url
@@ -29,7 +30,7 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
 
     if(result.success){
         contentsInfo.contentsUrl = contents_url
-        contentsInfo.contentsSiteName = cutSiteUrl(contents_url)
+        contentsInfo.contentsSiteName = util.cutSiteUrl(contents_url)
         contentsInfo.contentsTitle = result.data.ogTitle,
         contentsInfo.contentsImage = result.data.ogImage.url
         
@@ -58,27 +59,7 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
     } else {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.BAD_REQUEST))
     }
-})
+});
 
-function cutSiteUrl(url){
-    var hostname;
-    if (url.indexOf("//") > -1) {
-        hostname = url.split('/')[2];
-    }
-    else {
-        hostname = url.split('/')[0];
-    }
-
-    //find & remove port number
-    hostname = hostname.split(':')[0];
-    //find & remove "?"
-    hostname = hostname.split('?')[0];
-    if(hostname.split('.').lenght > 2){
-        var cuttingStr = hostname.split('.')[0]
-        hostname = hostname.replace(cuttingStr.concat('.'),'')
-    }
-    
-    return hostname;
-}
 
 module.exports = router
