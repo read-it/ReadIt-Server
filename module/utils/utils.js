@@ -49,7 +49,7 @@ const util = {
         }
         hostname = hostname.split(':')[0];
         hostname = hostname.split('?')[0];
-        if(hostname.split('.').lenght > 2){
+        if(hostname.split('.').length > 2){
             var cuttingStr = hostname.split('.')[0]
             hostname = hostname.replace(cuttingStr.concat('.'),'')
         }

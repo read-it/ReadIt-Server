@@ -23,7 +23,7 @@ router.put('/:category_idx/:delete_flag', authUtils.isLoggedin, async (req, res)
     const baseQuery = `WHERE contents_idx in (select m.contents_idx FROM (SELECT * from contents where user_idx = ${user} AND category_idx = ${category_idx}) AS m)`;
 
     // const selectIdxQuery = `SELECT contents_idx FROM contents WHERE user_idx = ${user} AND category_idx = ?`;
-    // const userCateQuery = `SELECT cate.user_idx, cate.category_name, cate.category_idx FROM category AS cate WHERE cate.user_idx = ${user} AND cate.category_name LIKE '전체'`
+    const userCateQuery = `SELECT cate.user_idx, cate.category_name, cate.category_idx FROM category AS cate WHERE cate.user_idx = ${user} AND cate.category_name LIKE '전체'`
     // const updateQuery = `UPDATE con SET category_idx = ? WHERE FIND_IN_SET(contents_idx, ?)`;
     const deleteQuery = `DELETE FROM category WHERE category_idx = ?`
 
@@ -36,6 +36,7 @@ router.put('/:category_idx/:delete_flag', authUtils.isLoggedin, async (req, res)
         
         // const updateResult = await connection.query(updateQuery, [default_idx, selectIdxResult[0].contents_idx]);
         
+
 
         var Query 
 

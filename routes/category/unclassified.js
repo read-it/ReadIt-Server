@@ -7,8 +7,6 @@ const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 
-const ogs = require('open-graph-scraper');
-
 router.get('/', authUtil.isLoggedin ,async (req, res) => {
     
     let user = req.decoded.idx;
@@ -22,11 +20,15 @@ router.get('/', authUtil.isLoggedin ,async (req, res) => {
     WHERE G.category_name LIKE '전체' AND M.user_idx = ${user}
     ORDER BY M.created_date DESC`;
 
+
     let QueryResult = await db.queryParam_None(selectQuery);
     if(!selectQuery) {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
     } else {
-        res.status(200).send(util.successTrue(statusCode.OK, resMessage.UNCLASSIFIED_CATE_SELECT_SUCCESS,  {content_list : QueryResult}));
+        var data = {}
+        data.contents_list = util.insertAfterCreateDateAtResult(QueryResult)
+
+        res.status(200).send(util.successTrue(statusCode.OK, resMessage.UNCLASSIFIED_CATE_SELECT_SUCCESS, data));
     }
 });
 
