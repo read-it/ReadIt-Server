@@ -49,6 +49,8 @@ module.exports = {
     CATEGORY_SELECT_SUCCESS: "전체 카테고리 조회 성공",
     UNCLASSIFIED_CATE_SELECT_SUCCESS : "미분류 카테고리 조회 성공",
     CREATED_TOTAL_CATEGORY_FAIL : "전체 카테고리 생성 실패",
+    CREATED_CATEGORY_FAIL: "카테고리 생성 실패",
+    CREATED_CATEGORY_SUCCESS: "카테고리 생성 성공",
     MODIFY_CATE_SUCCESS : "카테고리 이름이 변경되었습니다.",
     CATE_MODIFY_FAIL : "바꿀 수 없는 카테고리입니다.",
     ALREADY_CATE_NAME : "카테고리 이름이 이미 존재합니다.",
@@ -59,6 +61,7 @@ module.exports = {
     INVALID_CATE_IDX : "유효하지 않은 카테고리입니다.",
 
     //마이페이지
+    GET_USER_SUCCESS: "유저 조회 성공",
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
 

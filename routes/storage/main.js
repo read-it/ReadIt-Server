@@ -49,7 +49,7 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
             data.current_date = moment().format('YYYY-MM-DD')
             data.total_count = selectTotalContentsResult.length
             data.unread_count = unReadCount
-            data.contents_list = selectTotalContentsResult
+            data.contents_list = util.insertAfterCreateDateAtResult(selectTotalContentsResult)
             res.status(200).send(util.successTrue(statusCode.OK,resMessage.STORAGE_MAIN_SUCCESS,data))
         } else {
             res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))

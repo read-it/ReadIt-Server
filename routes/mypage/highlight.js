@@ -16,12 +16,14 @@ router.get('/highlightlist',authUtil.isLoggedin, async (req, res) => {
     const userIdx = req.decoded.idx;
 
     //로그인 유저가 하이라이팅한 콘텐츠, 하이라이트개수를 최근 하이라이트 시간순으로 가져오기
-    const getHighlightListQuery = `SELECT * FROM
-                                        (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt, MAX(H.highlight_date) AS recent_date
-                                        FROM contents C LEFT JOIN highlight H
-                                        ON C.contents_idx = H.contents_idx
-                                        GROUP BY C.contents_idx ) S
-                                    WHERE S.user_idx = ${userIdx} ORDER BY S.recent_date DESC`;
+    const getHighlightListQuery = `
+    SELECT * FROM
+        (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt, MAX(H.highlight_date) AS recent_date
+        FROM contents C LEFT JOIN highlight H
+        ON C.contents_idx = H.contents_idx
+        WHERE C.delete_flag = false
+        GROUP BY C.contents_idx ) S
+    WHERE S.user_idx = ${userIdx} AND S.highlight_cnt > 0  ORDER BY S.recent_date DESC`;
 
     //특정콘텐츠의 하이라이트 가져오기
     const getHighlightInContentsQuery = `SELECT * FROM highlight

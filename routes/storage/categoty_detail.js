@@ -57,7 +57,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             }
             //오래된 순
             case '2': {
-                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.created_date ASEC, R.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.created_date ASC, R.contents_idx')
                 break;
             }
             //안읽은 순
@@ -84,7 +84,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             data.total_count = findResult.length
             data.unread_count = unReadCount
             data.current_date = moment().format('YYYY-MM-DD')
-            data.contents_list = findResult
+            data.contents_list = util.insertAfterCreateDateAtResult(findResult)
             res.status(200).send(util.successTrue(statusCode.OK,resMessage.CATEGORY_SELECT_SUCCESS,data))
         } else {
             res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
