@@ -46,13 +46,13 @@ router.get('/:default_idx/:category_idx', authUtil.isLoggedin, async(req, res) =
 
 	//유저의 전체 콘텐츠 가져오기
 	let getContentsListQuery = 
-	`
-	SELECT * FROM 
-		(SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt 
-			FROM contents C LEFT JOIN highlight H
-			ON C.contents_idx=H.contents_idx 
-			GROUP BY C.contents_idx) S
-	WHERE S.user_idx = ${userIdx} AND S.title IS NOT NULL
+	` SELECT M.*, G.category_name FROM category G RIGHT JOIN
+		(SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+			ON C.contents_idx = H.contents_idx
+			WHERE C.user_idx = ${userIdx} AND C.delete_flag = false
+			GROUP BY C.contents_idx) M
+			ON M.category_idx = G.category_idx
+			WHERE M.title IS NOT NULL
 	`;
 
 		//검색 카테고리가 전체인지 세부 카테고리인지 확인
@@ -81,7 +81,6 @@ router.get('/:default_idx/:category_idx', authUtil.isLoggedin, async(req, res) =
 				}
 			}
 
-			console.log(findContentsList.length)
 			res.status(200).send(util.successTrue(statusCode.OK, resMessage.GET_SEARCH_RESULT_SUCCESS, findContentsList));
 
 	}
