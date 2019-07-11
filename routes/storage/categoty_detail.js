@@ -57,7 +57,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             }
             //오래된 순
             case '2': {
-                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.created_date ASEC, R.contents_idx')
+                findContentsByCategory = findContentsByCategory.concat(' R.fixed_date DESC,R.created_date ASC, R.contents_idx')
                 break;
             }
             //안읽은 순

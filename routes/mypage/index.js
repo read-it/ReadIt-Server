@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+router.use('/',require('./mypage'))
 router.use('/scrap', require('./scrap'));
 router.use('/highlight', require('./highlight'));
 router.use('/trashcan', require('./trashcan'));

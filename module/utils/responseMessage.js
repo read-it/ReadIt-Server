@@ -61,6 +61,7 @@ module.exports = {
     INVALID_CATE_IDX : "유효하지 않은 카테고리입니다.",
 
     //마이페이지
+    GET_USER_SUCCESS: "유저 조회 성공",
     GET_SCRAP_LIST_SUCCESS: "스크랩 조회 성공",
     GET_SCRAP_LIST_FAIL: "스크랩 조회 실패",
 
