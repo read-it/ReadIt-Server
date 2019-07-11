@@ -41,7 +41,7 @@ router.put('/:category_idx/:delete_flag', authUtils.isLoggedin, async (req, res)
 
         switch(delete_flag) {
             case '0' : 
-                Query = `UPDATE contents set category_idx = ${default_idx}` + baseQuery;
+                Query = `UPDATE contents set category_idx = ${default_idx} ` + baseQuery;
                 break;
             
             case '1' : 
