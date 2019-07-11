@@ -18,10 +18,10 @@ router.get('/', authUtil.isLoggedin ,async (req, res) => {
     WHERE C.delete_flag = 0
     GROUP BY C.contents_idx) M
     ON G.category_idx = M.category_idx
-    WHERE G.category_name LIKE '전체' AND M.user_idx = 6
+    WHERE G.category_name LIKE '전체' AND M.user_idx = ${user}
     ORDER BY M.created_date DESC`;
 
-    let QueryResult = await db.queryParam_Arr(selectQuery, [user]);
+    let QueryResult = await db.queryParam_None(selectQuery);
     if(!selectQuery) {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
     } else {
