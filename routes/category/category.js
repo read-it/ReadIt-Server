@@ -59,9 +59,9 @@ router.post('/',authUtil.isLoggedin ,async (req, res) => {
         });
 
         if (!insertTransaction) {
-            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
+            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.CREATED_CATEGORY_FAIL));
         } else { 
-            res.status(200).send(utils.successTrue(statusCode.CREATED, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS, ));
+            res.status(200).send(utils.successTrue(statusCode.CREATED, resMessage.CREATED_CATEGORY_SUCCESS));
         }
     }
 });
