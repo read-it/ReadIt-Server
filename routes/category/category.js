@@ -24,7 +24,7 @@ router.get('/', authUtil.isLoggedin,async (req, res) => {
 //카테고리 추가
 router.post('/',authUtil.isLoggedin ,async (req, res) => {
     const user = req.decoded.idx;
-    const contentsArray = req.body.contents_idx.toString();
+    const contents_idx = req.body.contents_idx.toString();
 
     const selectQuery = `SELECT c.category_idx, c.category_name FROM category AS c WHERE c.user_idx = ${user} AND c.category_name = ?`;
 
@@ -38,7 +38,7 @@ router.post('/',authUtil.isLoggedin ,async (req, res) => {
         const selectResult = await connection.query(selectQuery, [user, req.body.category_name]);
         const insertResult = await connection.query(insertQuery, [req.body.category_name, user]);
         const idx = insertResult.insertId;
-        const updateResult = await connection.query(updateQuery, [idx, contentsArray]);
+        const updateResult = await connection.query(updateQuery, [idx, contents_idx]);
 
         // 카테고리 이름 중복 체크
         
