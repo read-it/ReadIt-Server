@@ -82,10 +82,15 @@ module.exports = {
     EDIT_PASSWORD_SUCCESS: "비밀번호 변경 성공",
 
     NOT_SAME_REFRESH_TOKEN : "refreshtoken이 일치하지 않습니다",
-    SET_READIT_TIME : "리딧타임 설정이 완료되었습니다",
+    SET_READIT_TIME : "리딧타임 시간 설정이 완료되었습니다",
     BAD_PARAMETER : "잘못된 파라미터를 입력하였습니다",
-    END_READIT_TIME : "리딧타임 설정을 취소합니다",
-    BAD_TIME : "잘못된 시간을 입력하였습니다"
+    END_READIT_TIME_ALARM : "리딧타임 설정을 취소합니다",
+    BAD_TIME : "잘못된 시간을 입력하였습니다",
+    CHANGE_ALARM_FLAG : "푸시알람 on/off 여부를 변경하였습니다",
+    SUCCESS_READIT_ALARM : "푸시알람 성공",
+    FAIL_READIT_ALARM : "푸시알람 실패",
+    SET_READIT_TIME_ALARM : "리딧타임 알림이 완료되었습니다",
+    FORBIDDEN_ACCESS : "허용하지 않은 접근입니다."
 
     
 };

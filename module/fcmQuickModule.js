@@ -1,17 +1,8 @@
-//fcmquick module
 
-// /**
-//  * Firebase Cloud Messaging (FCM) can be used to send messages to clients on iOS, Android and Web.
-//  *
-//  * This sample uses FCM to send two types of messages to clients that are subscribed to the `news`
-//  * topic. One type of message is a simple notification message (display message). The other is
-//  * a notification message (display notification) with platform specific customizations. For example,
-//  * a badge is added to messages that are sent to iOS devices.
-//  */
 // const https = require('https');
 // var fs = require('fs');
 // var {google} = require('googleapis');
-// var PROJECT_ID = 'readit0713';
+// var PROJECT_ID = 'readit-ec394';
 // var HOST = 'fcm.googleapis.com';
 // var PATH = '/v1/projects/' + PROJECT_ID + '/messages:send';
 // var MESSAGING_SCOPE = 'https://www.googleapis.com/auth/firebase.messaging';
@@ -112,36 +103,38 @@
 //      * common parts of a notification message that will be sent
 //      * to any app instance subscribed to the news topic.
 //      */
+//     // buildCommonMessage : (alarmHour) => {
 //     buildCommonMessage : () => {
 //         return {
 //             'message': {
-//             'topic': 'news',
+//             'topic': 'alarmtime',
 //             'notification': {
-//                 'title': 'FCM Notification',
-//                 'body': 'Notification from FCM'
+//                 'title': 'Time to Read it',
+//                 'body': AlarmMessage(3)
+//                 // 'body': AlarmMessage(alarmHour)
 //             }
 //             }
 //         };
 //     }
+// }
 
+
+// function AlarmMessage(alarmHour) {
+//     if(alarmHour>=3 && alarmHour<=5){
+//         return('조용한 새벽, 저장해둔 글들을 읽어보아요.');
 //     }
-
-
-
-
-
-
-//모듈 사용법
-//     var message = process.argv[2];
-//     if (message && message == 'common-message') {
-//         var commonMessage = buildCommonMessage();
-//         console.log('FCM request body for message using common notification object:');
-//         console.log(JSON.stringify(commonMessage, null, 2));
-//         sendFcmMessage(buildCommonMessage());
-//         } else {
-//             console.log('Invalid command. Please use one of the following:\n'
-//             + 'node index.js common-message\n');
+//     else if(alarmHour>=6 && alarmHour<=9){
+//         return('오늘도 생산적으로 하루를 시작해보세요.');
+//     }
+//     else if(alarmHour>=10 && alarmHour<=12){
+//         return('머리가 가장 맑을 시간. 콘텐츠 하나 읽어볼까요?');
+//     }
+//     else if(alarmHour>=13 && alarmHour<=17){
+//         return('머릿속에 인풋이 필요하다면 리딧으로!');
+//     }
+//     else if(alarmHour>=18 && alarmHour<=21){
+//         return('집가는 길 발견한 콘텐츠를 리딧에 차곡차곡 넣어두세요.');
 //         }
-
-
-//     // })})
+//     else{
+//         return ('유익한 글 하나만 읽고 잘까요?')
+//     }}

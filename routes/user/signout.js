@@ -12,7 +12,7 @@ router.put('/', authUtil.isLoggedin, async (req, res) => {
     const userIdx = req.decoded.idx;
 
     //회원 리프레시토큰 지우기
-    let deleteRefreshTokenQuery = `UPDATE user SET refresh_token = null WHERE user_idx = ${userIdx}`
+    let deleteRefreshTokenQuery = `UPDATE user SET refresh_token = null, device_token = null WHERE user_idx = ${userIdx}`
     let deleteRefreshTokenResult = await db.queryParam_None(deleteRefreshTokenQuery);
 
     if(!deleteRefreshTokenResult) {

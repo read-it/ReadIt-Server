@@ -1,33 +1,59 @@
+var express = require('express');
+var router = express.Router();
 
-//schedule하기
+const util = require('../../module/utils/utils');
+const statusCode = require('../../module/utils/statusCode');
+const resMessage = require('../../module/utils/responseMessage');
+const authUtils = require("../../module/utils/authUtils");
+const db = require('../../module/pool');
 
-//     var schedule = require('node-schedule'); //npm install node-schedule --save 해주기
-//     var rule = new schedule.RecurrenceRule();
-//     const userIdx = req.decoded.idx
+//푸시알람이 되어있는가!
+router.put('/:alarm_flag', authUtils.isLoggedin, async (req, res) => {
+    const userIdx = req.decoded.idx;    
+    const alarmFlag = req.params.alarm_flag; //1이면 푸시알람 on. 0이면 푸시알람 off
 
-//     //DB에 있는 값을 적용 (SELECT문으로)
-//     let selectTimeQuery = `SELECT alarm_hour, alarm_minute FROM alarm WHERE user_idx=?`; //수정
-//     let selectTimeResult = await db.queryParam_Arr(selectTimeQuery, [userIdx]);
+    //alarmFlag(params)가 0, 1 모두 아닌 경우
+    if(!(alarmFlag==1 || alarmFlag ==0)){
+        res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.BAD_PARAMETER));
+    }
+    else{
+        
+        let selectAlarmInfoQuery = 'SELECT * FROM alarm WHERE user_idx = ?'
+        let AlarmInfo = await db.queryParam_Arr(selectAlarmInfoQuery, userIdx);
+        
+        //DB에 기존 정보가 없는 경우
+        if(AlarmInfo.length == 0){
+            //alarm_flag DB에 insert
+            let insertAlarmFlagQuery = 'INSERT INTO alarm (user_idx,alarm_flag) VALUES (?,?)'
+            let insertAlarmFlagResult = await db.queryParam_Arr(insertAlarmFlagQuery,[userIdx,alarmFlag])
+            //flag insert 실패
+            if(!insertAlarmFlagResult){
+                res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+            }
+            //flag insert 성공
+            else{
+                res.status(200).send(util.successTrue(statusCode.OK, resMessage.CHANGE_ALARM_FLAG));
+            }
+        }
+        
+        //DB에 기존 정보가 있는 경우
+        else{
+            //alarm_flag DB에 수정.
+            const updateAlarmFlagQuery = 'UPDATE alarm SET alarm_flag = ? WHERE user_idx = ?'
+            const updateAlarmFlagResult = await db.queryParam_Arr(updateAlarmFlagQuery,[alarmFlag, userIdx]);
+            //flag 수정 실패
+            if(!updateAlarmFlagResult){
+                res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+            }
+            //flag 수정 성공
+            else{
+                res.status(200).send(util.successTrue(statusCode.OK, resMessage.CHANGE_ALARM_FLAG));
+            }
+        }
+        
 
+        
+    }
 
-//     rule.hour = selectTimeResult[0].alarm_hour; //0~23 (클라가 오전 오후 계산해서 보내주세요)
-//     rule.minute = selectTimeResult[0].alarm_minute; //0~59
-
-
-//     var j = schedule.scheduleJob(rule, function(){
-
-
-//message 보내는 방법2
-//     var message = process.argv[2];
-//     if (message && message == 'common-message') {
-//         var commonMessage = buildCommonMessage();
-//         console.log('FCM request body for message using common notification object:');
-//         console.log(JSON.stringify(commonMessage, null, 2));
-//         sendFcmMessage(buildCommonMessage());
-//         } else {
-//             console.log('Invalid command. Please use one of the following:\n'
-//             + 'node index.js common-message\n');
-//         }
-
-
-    // })})
+})
+module.exports = router;

@@ -26,8 +26,8 @@ router.post('/', async (req, res) => {
         if(userResult[0].password==inputHashedPw.toString('base64')){
             //토큰 발급
             const tokens = jwt.sign(userResult[0].user_idx);
-            let updateTokenQuery = 'UPDATE user SET refresh_token = ? device_token = ? WHERE email = ?'
-            let updateTokenResult = await db.queryParam_Parse(updateTokenQuery, [tokens.refreshToken, req.body.device_token ,req.body.email]);
+            let updateTokenQuery = 'UPDATE user SET refresh_token = ?, device_token = ? WHERE user_idx = ?'
+            let updateTokenResult = await db.queryParam_Arr(updateTokenQuery, [tokens.refreshToken, req.body.device_token ,userResult[0].user_idx]);
             if(!updateTokenResult){
                 res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
             }else{
