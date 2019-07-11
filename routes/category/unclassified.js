@@ -11,20 +11,11 @@ const ogs = require('open-graph-scraper');
 
 router.get('/', authUtil.isLoggedin ,async (req, res) => {
 
-    var options = {}
-    var Info = {
-        contentsUrl: ''
-    }
-    options.url = contents_url
-    let result = await ogs(options)
-
-    if(result.success) {
-        contentsInfo.contentsSiteName = util.cutSiteUrl(contents_url)
-    }
+    
     let user = req.decoded.idx;
 
     let selectQuery = `SELECT G.category_name, M.* FROM category G LEFT JOIN
-    (SELECT C.category_idx, C.user_idx, C.contents_idx, C.title, C.thumbnail, C.contents_url, c.site_url, C.estimate_time, C.created_date, C.read_flag, C.delete_flag, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+    (SELECT C.category_idx, C.user_idx, C.contents_idx, C.title, C.thumbnail, C.contents_url, C.site_url, C.estimate_time, C.created_date, C.read_flag, C.delete_flag, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
     ON C.contents_idx = H.contents_idx
     WHERE C.delete_flag = 0
     GROUP BY C.contents_idx) M
