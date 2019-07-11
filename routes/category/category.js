@@ -24,7 +24,7 @@ router.get('/', authUtil.isLoggedin,async (req, res) => {
 //카테고리 추가
 router.post('/',authUtil.isLoggedin ,async (req, res) => {
     const user = req.decoded.idx;
-    const contents_idx = req.body.contents_idx.toString();
+    const contentsArray = req.body.contents_idx.toString();
 
     const selectQuery = `SELECT category_idx, category_name FROM category WHERE user_idx = ? AND category_name = ?`;
 
