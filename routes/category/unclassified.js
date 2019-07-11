@@ -10,7 +10,6 @@ const resMessage = require('../../module/utils/responseMessage');
 const ogs = require('open-graph-scraper');
 
 router.get('/', authUtil.isLoggedin ,async (req, res) => {
-
     
     let user = req.decoded.idx;
 
