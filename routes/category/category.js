@@ -12,7 +12,7 @@ const resMessage = require('../../module/utils/responseMessage');
 router.get('/', authUtil.isLoggedin,async (req, res) => {
     var user = req.decoded.idx;
 
-    let selectCategoryQuery = `SELECT c.category_idx, c.category_name FROM category AS c WHERE c.user_idx = ${user} AND char_length(category_name) <= 5 ORDER BY category_order DESC`;
+    let selectCategoryQuery = `SELECT c.category_idx, c.category_name FROM category AS c WHERE c.user_idx = ${user} AND char_length(category_name) <= 5 ORDER BY category_idx ASC, category_order DESC`;
     let QueryResult = await db.queryParam_None(selectCategoryQuery);
     if(!QueryResult) {
         res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
@@ -34,7 +34,6 @@ router.post('/',authUtil.isLoggedin ,async (req, res) => {
 
     const selectResult = await db.queryParam_Arr(selectQuery, [user, req.body.category_name]);
     
-    console.log(selectResult[0])
     // 카테고리 이름 중복 체크
     if(!selectResult) {
         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
