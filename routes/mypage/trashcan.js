@@ -72,15 +72,15 @@ router.delete('/', authUtils.isLoggedin, async (req, res) => {
             }
         }
     })
-    if (!deleteTransaction || deleteTransaction == undefined) {
-        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
-    } else { 
-        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
-    }
-
-    // if(deleteTransaction){
+    // if (!deleteTransaction || deleteTransaction == undefined) {
+    //     res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
+    // } else { 
     //     res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
     // }
+
+    if(deleteTransaction){
+        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
+    }
 });
 
 //삭제된 항목 복원
