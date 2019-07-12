@@ -55,7 +55,7 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
             res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
         }
     })
-    if(getStorageMainTransacion == null){
+    if(getStorageMainTransacion == null || getStorageMainTransacion == undefined){
         res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
     }
 })

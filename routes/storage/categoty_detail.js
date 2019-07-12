@@ -90,7 +90,7 @@ router.get('/:category_idx/:sort',authUtils.isLoggedin, async (req, res) => {
             res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
         }
     })
-    if(contentsSelectTransaction == null){
+    if(contentsSelectTransaction == null || contentsSelectTransaction == undefined){
         res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
     }
 })

@@ -58,6 +58,9 @@ router.post('/:type',authUtils.isLoggedin, async (req, res) => {
             }
         }
     })
+    if(!editTransaction || editTransaction == undefined){
+        res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+    }
 })
 
 module.exports = router
