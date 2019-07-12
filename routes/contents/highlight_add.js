@@ -9,6 +9,7 @@ const moment = require('moment')
 router.post('/add/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     let highlight = req.body.highlight
     let jsonHighLight = JSON.parse(highlight)
+    console.log(jsonHighLight)
     let insertHighlightQuery = 
     `
     INSERT INTO highlight
