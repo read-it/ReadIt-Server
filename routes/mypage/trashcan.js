@@ -21,7 +21,7 @@ router.get('/', authUtils.isLoggedin, async (req, res) => {
             WHERE C.user_idx = ${userIdx} AND C.delete_flag = true
             GROUP BY C.contents_idx) R
         ON G.category_idx = R.category_idx
-        ORDER BY R.created_date DESC`;
+        ORDER BY R.estimate_time DESC`;
     
     const getDeletedListResult = await db.queryParam_None(getDeletedListQuery);
 
