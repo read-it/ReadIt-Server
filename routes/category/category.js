@@ -12,7 +12,7 @@ const resMessage = require('../../module/utils/responseMessage');
 router.get('/', authUtil.isLoggedin,async (req, res) => {
     var user = req.decoded.idx;
 
-    let selectCategoryQuery = `SELECT c.category_idx, c.category_name FROM category AS c WHERE c.user_idx = ${user} AND char_length(category_name) <= 5 ORDER BY category_idx ASC, category_order DESC`;
+    let selectCategoryQuery = `SELECT c.category_idx, c.category_name FROM category AS c WHERE c.user_idx = ${user} AND char_length(category_name) <= 5 ORDER BY category_order DESC, category_idx ASC`;
     let QueryResult = await db.queryParam_None(selectCategoryQuery);
     if(!QueryResult) {
         res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));

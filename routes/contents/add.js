@@ -12,10 +12,22 @@ router.post('/',authUtils.isLoggedin,async (req, res) => {
     let category_idx = req.body.category_idx
     let contents_url = req.body.contents_url
 
-    // if(category_idx == null || contents_url == null){
-    //     return res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.OUT_OF_VALUE))
-    // }
-    
+    let selectCategory =
+    `
+    SELECT *
+    FROM category
+    WHERE category_name = '전체' AND user_idx = ${req.decoded.idx}
+    `
+
+
+    if(category_idx == null || category_idx == undefined){
+        let selectResult = await db.queryParam_None(selectCategory)
+        if(!selectResult){
+            category_idx = selectResult[0].category_idx
+        } else {
+            return res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
+        }
+    }    
     var options = {}
     var contentsInfo = {
         contentsSiteName: '',
