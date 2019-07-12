@@ -6,14 +6,10 @@ const db = require('../../module/pool');
 const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
-const authUtils = require('../../module/utils/authUtils');
+const authUtil = require('../../module/utils/authUtils');
 const upload = require('../../config/multer');
-const jwt = require('../../module/jwt');
 
-router.put('/',  upload.single('profile_img'), authUtils.isLoggedin, async (req, res) => {
-
-    //토큰에서 유저 idx 가져오기
-    const loginUserIdx = jwt.verify(req.headers.token).idx;
+router.put('/',  upload.single('profile_img'), authUtil.isLoggedin, async (req, res) => {
 
     let findUserIdxQuery = `SELECT profile_img, nickname FROM user WHERE user_idx=${req.decoded.idx}`;
     let userResult = await db.queryParam_None(findUserIdxQuery);
@@ -22,16 +18,32 @@ router.put('/',  upload.single('profile_img'), authUtils.isLoggedin, async (req,
         res.status(200).send(util.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR)); 
     }
     else{
-        let updateUserInfoQuery = 'UPDATE user SET profile_img = ?, nickname = ? WHERE user_idx = ?'
-        let newNickname = req.body.nickname
+        let updateUserInfoQuery = 'UPDATE user SET profile_img = ?, nickname = ? WHERE user_idx = ?';
+        let newNickname = req.body.nickname;
+        
+        //닉네임 null 일 경우
+        if(!newNickname){
+            newNickname = userResult[0].nickname;
+        }
+
+        let profileImg = new String();
+        
+        //사진 null 일 경우
+        if(!req.file){
+            profileImg = userResult[0].profile_img;
+        } else {
+            profileImg = req.file.location;
+        }
 
         //닉네임 길이 유효성 검사
         if(newNickname.length<=5){
-            let updateUserInfoResult = await db.queryParam_Arr(updateUserInfoQuery, [req.file.location , req.body.nickname, req.decoded.idx]);
+
+            let updateUserInfoResult = await db.queryParam_Arr(updateUserInfoQuery, [profileImg , newNickname, req.decoded.idx]);
+
             if(!updateUserInfoResult){
                 res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR));
             } else{
-                res.status(200).send(util.successTrue(statusCode.OK, resMessage.CHANGE_SUCCESSS));
+                res.status(200).send(util.successTrue(statusCode.OK, resMessage.CHANGE_SUCCESS));
             }
         }
         else{

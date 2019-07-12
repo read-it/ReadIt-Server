@@ -76,7 +76,7 @@ module.exports = {
 
     NOT_SAME_PASSWORD : "재입력된 비밀번호가 일치하지 않습니다",
 
-    CHANGE_SUCCESSS : "변경이 완료되었습니다.",
+    CHANGE_SUCCESS : "변경이 완료되었습니다.",
     INVALID_NICKNAME : "잘못된 형식의 닉네임입니다",
     INVALID_EMAIL : "잘못된 형식의 이메일입니다",
     INVALID_PASSWORD : "잘못된 형식의 비밀번호입니다",
