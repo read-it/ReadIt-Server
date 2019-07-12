@@ -11,11 +11,11 @@ router.post('/add/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     let insertHighlightQuery = 
     `
     INSERT INTO highlight
-    (user_idx,contents_idx,highlight_date,highlight_rect)
+    (contents_idx,highlight_date,highlight_rect)
     VALUES (?,?,?,?)
     `
 
-    let insertResult = await db.queryParam_Arr(insertHighlightQuery,[req.decoded.idx,req.params.contents_idx,moment().format('YYYY-MM-DD'),highlightRect])
+    let insertResult = await db.queryParam_Arr(insertHighlightQuery,[req.params.contents_idx,moment().format('YYYY-MM-DD'),highlightRect])
 
     if(!insertResult){
         res.status(200).send(util.successTrue(statusCode.OK,'하이라이트 성공'))
