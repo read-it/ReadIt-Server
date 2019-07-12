@@ -34,20 +34,28 @@ router.post('/',authUtil.isLoggedin ,async (req, res) => {
 
     const selectResult = await db.queryParam_Arr(selectQuery, [user, req.body.category_name]);
     
-    // 카테고리 이름 중복 체크
+    // 카테고리 이름 중복, 글자수 검사
     if(!selectResult) {
         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-    }else if(selectResult[0]){
+    } else if(selectResult[0]){
         res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.ALREADY_CATE_NAME));
+    } else if(req.body.category_name.length > 5) {
+        res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.INVALID_CATE));
     } else {
         
         const insertTransaction = await db.Transaction(async(connection) => {
             const insertResult = await connection.query(insertQuery, [req.body.category_name, user]);
             const idx = insertResult.insertId;
+        
 
-            if(contentsArray.length!=0){
-                const updateResult = await connection.query(updateQuery, [idx, contentsArray]);
+            if(!insertResult) {
+                res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+            } else {
+                if(contentsArray.length!=0){
+                    const updateResult = await connection.query(updateQuery, [idx, contentsArray]);
+                }
             }
+            
 
             // try{
             //     // for(var i=0; i<updateResult)
