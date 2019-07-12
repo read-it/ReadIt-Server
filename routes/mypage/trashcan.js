@@ -58,20 +58,20 @@ router.delete('/', authUtils.isLoggedin, async (req, res) => {
     
         if(!selectCountResult){
             //선택항목 조회 실패
-            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+            return res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
         }
         else if (selectCountResult[0].total !== targetContentsSize) {
             //선택항목이 삭제된 콘텐츠가 아니거나 없는 콘텐츠
-            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NO_DELETED_CONTENT))
+            return res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NO_DELETED_CONTENT))
         } else {
             //선택항목들 삭제
             const result = await connection.query(deleteContentsQuery, [targetContents])
             if (!result) {
-                res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+                return res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
             }
         }
     })
-    if (!deleteTransaction) {
+    if (!deleteTransaction || deleteTransaction == undefined) {
         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
     } else { 
         res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
