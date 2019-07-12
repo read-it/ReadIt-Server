@@ -9,8 +9,12 @@ const jwt = require('../../module/jwt');
 //const upload = require('../../config/multer')
 var isAlphanumeric = require('is-alphanumeric');
 var validator = require("email-validator");
+const moment = require('moment');
 
 router.post('/', async (req, res)=>{
+
+    let tokenData = {accesstoken : null, refreshtoken : null};
+
     //비밀번호 형식 확인하는 function
     function passwordIsValid(password) {
         if(password.length<=12 && password.length>=8){
@@ -69,15 +73,28 @@ router.post('/', async (req, res)=>{
                     const insertCategoryQuery = 'INSERT INTO category (category_name, user_idx) VALUES (?, ?)';
                     const insertTotalCategoryResult = await connection.query(insertCategoryQuery, ['전체', loginUserIdx]);
 
+                    //기본 콘텐츠 저장
+                    const insertContentsQuery = `
+                    INSERT INTO contents 
+                    (title, thumbnail, created_date, estimate_time,contents_url, site_url, fixed_date,category_idx, user_idx)
+                    VALUES (?,?,?,?,?,?,?,?,?)`;
+
+                    const defaultCategoryIdx = insertTotalCategoryResult.insertId;
+                    const createDate = moment().format("YYYY-MM-DD");
+                    const insertContentsResult = await connection.query(insertContentsQuery, 
+                        ["Readit 리딧", "https://static.wixstatic.com/media/a41fbc_327911d784794ddf96af1f9d2fefefa7%7Emv2.png/v1/fit/w_2500,h_1330,al_c/a41fbc_327911d784794ddf96af1f9d2fefefa7%7Emv2.png", createDate, "7분",
+                        "https://www.readit-go.com","readit-go.com",createDate,defaultCategoryIdx,loginUserIdx]);
+
                     //토큰 생성
                     const tokens = jwt.sign(loginUserIdx); 
                     const updateRefreshTokenResult = await connection.query(updateRefreshTokenQuery, [tokens.refreshToken, loginUserIdx]);
-                    if(!updateRefreshTokenResult){
-                        res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-                    }else{
-                        res.status(200).send(util.successTrue(statusCode.OK, resMessage.CREATED_USER, {accesstoken : tokens.token, refreshtoken : tokens.refreshToken} ));
-                    }
+                    tokenData = {accesstoken : tokens.token, refreshtoken : tokens.refreshToken}
                 });
+                if(!signupTransaction){
+                    res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+                }else{
+                    res.status(200).send(util.successTrue(statusCode.OK, resMessage.CREATED_USER, tokenData ));
+                }
         }}
     }
 }}});
