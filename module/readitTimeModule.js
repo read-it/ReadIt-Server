@@ -12,34 +12,25 @@ var rule = new schedule.RecurrenceRule();
 
 
 module.exports = {
-    //기기에게 보내는 내용
-    // readitTimeAlarm : (registrationToken, alarmHour, alarmMinute) =>{
-    readitTimeAlarm : (registrationToken) =>{
+    
+    readitTimeAlarm : (registrationToken, alarmHour) =>{
 
         //기기에게 보내는 내용
         var payload = {
             notification: {
                 title: "Time to Read it",
-                body: AlarmMessage(3) //실제
+                body: AlarmMessage(alarmHour) //실제
                 }
             };
-
-        // //schedule하기
-        // rule.hour = alarmHour; //0~23 (클라가 오전 오후 계산해서 보내주세요)
-        // rule.minute = alarmMinute; //0~59
-
-        // var scheduler = schedule.scheduleJob(rule, function(){
-
             //payload를 device로 보냄
             admin.messaging().sendToDevice(registrationToken, payload)
             .then(function(response) {
             console.log("Successfully sent message:", response);
-            console.log (response.results [0] .error)
+            // console.log (response.results [0] .error)
             })
             .catch(function(error) {
             console.log("Error sending message:", error);
             })
-        // });
             
         }
 }

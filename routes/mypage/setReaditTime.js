@@ -8,6 +8,8 @@ const authUtils = require("../../module/utils/authUtils");
 const readitTime = require("../../module/readitTimeModule");
 const fcmQuick  = require("../../module/fcmQuickModule");
 const db = require('../../module/pool');
+const alarmModule = require('../../module/schedule_tt');
+const newalarmModule = require('../../module/scheduleTest')
 
 
 //리딧타임 설정이 되어있는가!
@@ -39,6 +41,7 @@ router.put('/:readittime_flag', authUtils.isLoggedin, async (req, res) => {
                 }
                 //리딧타임 정보 insert 성공
                 else{
+                    newalarmModule.select();
                     res.status(200).send(util.successTrue(statusCode.OK, resMessage.SET_READIT_TIME));
                 }
             }
@@ -51,6 +54,8 @@ router.put('/:readittime_flag', authUtils.isLoggedin, async (req, res) => {
                 //리딧타임 on
                 if(readitTimeFlag==1){
                     const updateReaditTimeResult = await db.queryParam_Arr(updateReaditTimeQuery,[readitTimeFlag, req.body.alarm_hour, req.body.alarm_minute, userIdx]);
+
+
                     //리딧타임 update 실패
                     if(!updateReaditTimeResult){
                         res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
@@ -58,6 +63,7 @@ router.put('/:readittime_flag', authUtils.isLoggedin, async (req, res) => {
 
                     //리딧타임 update 성공
                     else{
+                        newalarmModule.select();
                         res.status(200).send(util.successTrue(statusCode.OK, resMessage.SET_READIT_TIME));
                     }
                                     
@@ -73,52 +79,13 @@ router.put('/:readittime_flag', authUtils.isLoggedin, async (req, res) => {
 
                     //리딧타임 update 성공
                     else{
+                        newalarmModule.select();
                         res.status(200).send(util.successTrue(statusCode.OK, resMessage.SET_READIT_TIME));
                     }                
                 }   
             }
         }
     }
-    })
-
-router.get('/', authUtils.isLoggedin, async (req, res) => {
-    const userIdx = req.decoded.idx;
-    let selectAlarmInfoQuery = 'SELECT * FROM alarm WHERE user_idx = ?'
-    let AlarmInfo = await db.queryParam_Arr(selectAlarmInfoQuery, userIdx);
-
-    if(!AlarmInfo){
-        res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-    }
-    
-
-    else if(AlarmInfo[0].alarm_flag == 1 && AlarmInfo[0].readittime_flag == 1){
-        let selectUserTokenQuery = 'SELECT device_token FROM user WHERE user_idx = ?'
-        let userToken = await db.queryParam_Arr(selectUserTokenQuery, userIdx);
-        if(!userToken){
-            res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-        }
-        else{
-            res.status(200).send(util.successTrue(statusCode.OK, resMessage.SET_READIT_TIME_ALARM));
-            // fcmQuick.sendFcmMessage(fcmQuick.buildCommonMessage());
-            // readitTime.readitTimeAlarm(userToken[0].device_token,AlarmInfo[0].alarm_hour,AlarmInfo[0].alarm_minute)
-            readitTime.readitTimeAlarm(userToken[0].device_token)
-            
-        }
-    }
-    else if(AlarmInfo[0].readittime_flag == 0){
-        let updateTokenNullQuery = `UPDATE alarm SET device_token = null WHERE user_idx = ${userIdx}`;
-        let TokenNullResult = await db.queryParam_None(updateTokenNullQuery);
-        if(TokenNullResult[0] == null){
-            res.status(200).send(util.successTrue(statusCode.OK, resMessage.SET_READIT_TIME_ALARM));
-        }
-        else{
-            res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
-        }
-    }
-    else{
-        res.status(200).send(util.successFalse(statusCode.forbidden, resMessage.FORBIDDEN_ACCESS));
-    }
 })
-
 
 module.exports = router;
