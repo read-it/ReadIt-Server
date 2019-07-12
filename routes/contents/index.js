@@ -8,6 +8,6 @@ router.use('/delete',require('./delete'))
 router.use('/scrap',require('./scrap'))
 router.use('/fix',require('./fix'))
 router.use('/search', require('./search'))
-router.use('highlight',require('./highlight_add'))
+router.use('/highlight',require('./highlight_add'))
 
 module.exports = router
