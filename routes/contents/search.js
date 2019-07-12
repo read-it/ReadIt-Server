@@ -59,7 +59,7 @@ router.get('/:default_idx/:category_idx', authUtil.isLoggedin, async(req, res) =
 		if(req.params.default_idx != req.params.category_idx){
 
 			//세부 카테고리일경우 쿼리문 추가
-			getContentsListQuery = getContentsListQuery + ` AND S.category_idx = ${req.params.category_idx}`;
+			getContentsListQuery = getContentsListQuery + ` AND G.category_idx = ${req.params.category_idx}`;
 		}
 		//검색할 콘텐츠 리스트 가져오기
 		const getContentsListResult = await db.queryParam_None(getContentsListQuery);
