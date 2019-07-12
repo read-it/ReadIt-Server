@@ -19,7 +19,11 @@ router.get('/',authUtil.isLoggedin, async (req, res) => {
 
     if(selectUserResult != null){
         if(selectUserResult.length == 1){
-            res.status(200).send(utils.successTrue(statusCode.OK,resMessage.GET_USER_SUCCESS,selectUserResult))
+            res.status(200).send(utils.successTrue(statusCode.OK,resMessage.GET_USER_SUCCESS,{
+                "email" : selectUserResult[0].email,
+                "nickname" : selectUserResult[0].nickname,
+                "profile_img" : selectUserResult[0].profile_img
+            }))
         } else {
             res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST,resMessage.BAD_REQUEST))
         }

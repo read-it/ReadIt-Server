@@ -16,32 +16,28 @@ router.put('/:category_idx/:delete_flag', authUtils.isLoggedin, async (req, res)
 
     const category_idx = req.params.category_idx;
     const delete_flag = req.params.delete_flag;
-    const default_idx = Number(req.body.default_idx); //유저가 갖고 있는 '전체' 카테고리 idx
+    //const default_idx = Number(req.body.default_idx); //유저가 갖고 있는 '전체' 카테고리 idx
 
     const config = `set SQL_SAFE_UPDATES = 0; `;
 
     const baseQuery = `WHERE contents_idx in (select m.contents_idx FROM (SELECT * from contents where user_idx = ${user} AND category_idx = ${category_idx}) AS m)`;
 
-    // const selectIdxQuery = `SELECT contents_idx FROM contents WHERE user_idx = ${user} AND category_idx = ?`;
-    // const userCateQuery = `SELECT cate.user_idx, cate.category_name, cate.category_idx FROM category AS cate WHERE cate.user_idx = ${user} AND cate.category_name LIKE '전체'`
+    const selectIdxQuery = `SELECT category_idx FROM category WHERE user_idx = ${user} AND category_name LIKE '전체'`
     // const updateQuery = `UPDATE con SET category_idx = ? WHERE FIND_IN_SET(contents_idx, ?)`;
     const deleteQuery = `DELETE FROM category WHERE category_idx = ?`
+        
 
-        // console.log(selectIdxResult);
-        // for(var i = 0; i < selectIdxResult.length; i++) {
-        //     contentsArray.push(selectIdxResult[i].contents_idx);
-        // }
-        // console.log(selectIdxResult);
-        // console.log(selectIdxResult[0].contents_idx);
-        
-        // const updateResult = await connection.query(updateQuery, [default_idx, selectIdxResult[0].contents_idx]);
-        
+        const selectIdxResult = await db.queryParam_None(selectIdxQuery);
+        console.log(selectIdxResult[0].category_idx);
+
+        var default_idx = selectIdxResult[0].category_idx;
+
 
         var Query 
 
         switch(delete_flag) {
             case '0' : 
-                Query = `UPDATE contents set category_idx = ${default_idx}` + baseQuery;
+                Query = `UPDATE contents set category_idx = ${default_idx} ` + baseQuery;
                 break;
             
             case '1' : 
@@ -76,10 +72,3 @@ router.put('/:category_idx/:delete_flag', authUtils.isLoggedin, async (req, res)
 
 
 module.exports = router;
-
-
-
-
-
-
-
