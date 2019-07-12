@@ -69,17 +69,14 @@ router.delete('/', authUtils.isLoggedin, async (req, res) => {
             const result = await connection.query(deleteContentsQuery, [targetContents])
             if (!result) {
                 res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+            } else {
+                res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
             }
         }
     })
-    // if (!deleteTransaction || deleteTransaction == undefined) {
-    //     res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
-    // } else { 
-    //     res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
-    // }
 
-    if(deleteTransaction){
-        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
+    if(!deleteTransaction || deleteTransaction == undefined){
+        res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DELETED_CONTENTS_FAIL));
     }
 });
 
@@ -88,6 +85,7 @@ router.put('/', authUtils.isLoggedin, async (req, res) => {
     
     let targetContents = req.body.contents_idx_list.toString()
     let targetContentsSize = req.body.contents_idx_list.length
+    console.log('targetSize : '+targetContentsSize)
 
     //선택한 항목이 삭제된 항목인지 확인
     let checkValidIdxQuery =
@@ -120,13 +118,13 @@ router.put('/', authUtils.isLoggedin, async (req, res) => {
             const result = await connection.query(updateDeleteFlagQuery, [targetContents])
             if (!result) {
                 res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+            } else {
+                res.status(200).send(utils.successTrue(statusCode.OK, resMessage.RESTORE_CONTENTS_SUCCESS));        
             }
         }
     })
-    if (!restoreTransaction) {
+    if (!restoreTransaction || restoreTransaction == undefined) {
         res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.RESTORE_CONTENTS_FAIL));
-    } else { 
-        res.status(200).send(utils.successTrue(statusCode.OK, resMessage.RESTORE_CONTENTS_SUCCESS));
     }
 });
 module.exports = router;
