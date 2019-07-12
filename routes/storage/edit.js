@@ -4,8 +4,8 @@ const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
 const db = require('../../module/pool')
-const jwt = require('../../module/jwt')
 const authUtils = require('../../module/utils/authUtils')
+const moment = require('moment');
 
 router.post('/:type',authUtils.isLoggedin, async (req, res) => {
     let targetContents = req.body.contents_idx_list.toString()
@@ -20,7 +20,7 @@ router.post('/:type',authUtils.isLoggedin, async (req, res) => {
     let updateDeleteFlagQuery =
     `
     UPDATE contents
-    SET delete_flag = true
+    SET delete_flag = true, estimate_time = ?
     WHERE FIND_IN_SET(contents_idx,?);
     `
     let updateReadFlagQuery = 
@@ -31,7 +31,7 @@ router.post('/:type',authUtils.isLoggedin, async (req, res) => {
     `
 
     var editTransaction = await db.Transaction(async(connection) => {
-        let selectCountResult = connection.query(checkValidIdxQuery, [targetContents])
+        let selectCountResult = await connection.query(checkValidIdxQuery, [targetContents])
         if(selectCountResult == null){
             res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
         }
@@ -40,7 +40,7 @@ router.post('/:type',authUtils.isLoggedin, async (req, res) => {
         } else {
             var result
             if(req.params.type == 1){
-                result = await connection.query(updateDeleteFlagQuery, [targetContents])
+                result = await connection.query(updateDeleteFlagQuery, [moment().format('YYYY-MM-DD HH:mm:ss'), targetContents]);
                 if (result == null) {
                     res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
                 } else {

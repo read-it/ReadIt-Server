@@ -3,10 +3,12 @@ const router = express.Router()
 const util = require('../../module/utils/utils');
 const statusCode = require('../../module/utils/statusCode');
 const resMessage = require('../../module/utils/responseMessage');
-const db = require('../../module/pool')
-const authUtils = require('../../module/utils/authUtils')
+const db = require('../../module/pool');
+const authUtils = require('../../module/utils/authUtils');
+const moment = require('moment');
 
 router.put('/:contents_idx',authUtils.isLoggedin,async(req, res) => {
+    
     let selectContentsQuery = 
     `
     SELECT count(*) as count
@@ -17,8 +19,8 @@ router.put('/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     let updateContentsQuery = 
     `
     UPDATE contents
-    SET delete_flag = true
-    WHERE contents_idx = ?
+    SET delete_flag = true, estimate_time = ?
+    WHERE contents_idx = ?;
     `
 
     var selectResult = await db.queryParam_Arr(selectContentsQuery,[req.decoded.idx,req.params.contents_idx])
@@ -29,7 +31,9 @@ router.put('/:contents_idx',authUtils.isLoggedin,async(req, res) => {
         return res.status(200).send(util.successFalse(statusCode.BAD_REQUEST,resMessage.OUT_OF_VALUE))
     }
 
-    var updateResult = await db.queryParam_Arr(updateContentsQuery,[req.params.contents_idx])
+    var updateResult = await db.queryParam_Arr(updateContentsQuery,[ moment().format('YYYY-MM-DD HH:mm:ss'),req.params.contents_idx])
+
+    console.log(updateResult)
 
     if(updateResult == null){
         res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR))
