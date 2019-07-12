@@ -24,10 +24,19 @@ router.put('/',  upload.single('profile_img'), authUtils.isLoggedin, async (req,
     else{
         let updateUserInfoQuery = 'UPDATE user SET profile_img = ?, nickname = ? WHERE user_idx = ?'
         let newNickname = req.body.nickname
+        let profileImg = req.file.location
 
         //닉네임 길이 유효성 검사
         if(newNickname.length<=5){
-            let updateUserInfoResult = await db.queryParam_Arr(updateUserInfoQuery, [req.file.location , req.body.nickname, req.decoded.idx]);
+
+            if(profileImg == null){
+                profileImg = userResult[0].profile_img;
+            }
+            if(newNickname == null){
+                newNickname = userResult[0].nickname;
+            }
+
+            let updateUserInfoResult = await db.queryParam_Arr(updateUserInfoQuery, [profileImg , newNickname, req.decoded.idx]);
             if(!updateUserInfoResult){
                 res.status(200).send(util.successFalse(statusCode.DB_ERROR,resMessage.DB_ERROR));
             } else{
