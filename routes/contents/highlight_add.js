@@ -14,7 +14,7 @@ router.post('/add/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     `
     INSERT INTO highlight
     (contents_idx,highlight_date,highlight_rect,highlight_text,hightlight_color)
-    VALUES (?,?,?)
+    VALUES (?,?,?,?,?)
     `
 
     let insertResult = await db.queryParam_Arr(insertHighlightQuery,
