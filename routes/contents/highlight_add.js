@@ -18,7 +18,7 @@ router.post('/add/:contents_idx',authUtils.isLoggedin,async(req, res) => {
     `
 
     let insertResult = await db.queryParam_Arr(insertHighlightQuery,
-        [req.params.contents_idx,moment().format('YYYY-MM-DD'),jsonHighLight.result,jsonHighLight.highlight_text,jsonHighLight.color])
+        [req.params.contents_idx,moment().format('YYYY-MM-DD'),JSON.stringify(jsonHighLight.result),jsonHighLight.highlight_text,jsonHighLight.color])
 
     if(insertResult){
         res.status(200).send(util.successTrue(statusCode.OK,'하이라이트 성공'))
