@@ -37,6 +37,7 @@ router.delete('/', authUtils.isLoggedin, async (req, res) => {
     
     let targetContents = req.body.contents_idx_list.toString()
     let targetContentsSize = req.body.contents_idx_list.length
+    console.log('targetSize : '+targetContentsSize)
 
     //선택한 항목이 삭제된 항목인지 확인
     let checkValidIdxQuery =
@@ -58,16 +59,16 @@ router.delete('/', authUtils.isLoggedin, async (req, res) => {
     
         if(!selectCountResult){
             //선택항목 조회 실패
-            return res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+            res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
         }
-        else if (selectCountResult[0].total !== targetContentsSize) {
+        else if (selectCountResult[0].total != targetContentsSize) {
             //선택항목이 삭제된 콘텐츠가 아니거나 없는 콘텐츠
-            return res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NO_DELETED_CONTENT))
+            res.status(200).send(utils.successFalse(statusCode.BAD_REQUEST, resMessage.NO_DELETED_CONTENT))
         } else {
             //선택항목들 삭제
             const result = await connection.query(deleteContentsQuery, [targetContents])
             if (!result) {
-                return res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
+                res.status(200).send(utils.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR))
             }
         }
     })
@@ -76,6 +77,10 @@ router.delete('/', authUtils.isLoggedin, async (req, res) => {
     } else { 
         res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
     }
+
+    // if(deleteTransaction){
+    //     res.status(200).send(utils.successTrue(statusCode.OK, resMessage.DELETE_CONTENTS_COMPLETELY_SUCCESS))
+    // }
 });
 
 //삭제된 항목 복원
