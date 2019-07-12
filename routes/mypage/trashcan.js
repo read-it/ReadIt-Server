@@ -13,13 +13,15 @@ router.get('/', authUtils.isLoggedin, async (req, res) => {
     
     const userIdx = req.decoded.idx;
 
-    //user의 delete_flag = 1 인 컨텐츠 목록
-    const getDeletedListQuery = `SELECT * FROM 
-                                    (SELECT C.*, COUNT(H.highlight_idx)AS highlight_cnt 
-                                        FROM contents C LEFT JOIN highlight H
-                                        ON C.contents_idx=H.contents_idx
-                                        GROUP BY C.contents_idx) D
-                                    WHERE D.user_idx = ${userIdx} AND D.delete_flag = true`;
+    //user의 delete_flag = true 인 컨텐츠 목록
+    const getDeletedListQuery = `
+    SELECT  R.*,G.category_name FROM category G INNER JOIN
+		(SELECT C.*, COUNT(H.highlight_idx) AS highlight_cnt FROM contents C LEFT JOIN highlight H
+            ON C.contents_idx = H.contents_idx
+            WHERE C.user_idx = ${userIdx} AND C.delete_flag = true
+            GROUP BY C.contents_idx) R
+        ON G.category_idx = R.category_idx
+        ORDER BY R.created_date DESC`;
     
     const getDeletedListResult = await db.queryParam_None(getDeletedListQuery);
 

@@ -49,7 +49,7 @@ router.post('/', async (req, res)=>{
                 res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.NOT_SAME_PASSWORD));
             } else {
                 //유저 등록 쿼리
-                const insertUserQuery = 'INSERT INTO user (email,password,salt) VALUES (?, ?, ?)';
+                const insertUserQuery = 'INSERT INTO user (email,password,salt,device_token) VALUES (?, ?, ?, ?)';
                 //등록된 유저 리프레시 등록 쿼리
                 const updateRefreshTokenQuery = `UPDATE user SET refresh_token = ? WHERE user_idx = ?`;
 
@@ -59,7 +59,7 @@ router.post('/', async (req, res)=>{
                     const hashedPw = (await crypto.pbkdf2(req.body.password, salt, 1000, 32, 'SHA512')).toString('base64');
                     
                     //유저 등록 실행
-                    const insertUserResult = await connection.query(insertUserQuery,[req.body.email, hashedPw, salt]);
+                    const insertUserResult = await connection.query(insertUserQuery,[req.body.email, hashedPw, salt, req.body.device_token]);
 
                     console.log(insertUserResult)
             
