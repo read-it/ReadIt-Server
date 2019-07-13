@@ -28,7 +28,7 @@ router.get('/',authUtils.isLoggedin,async (req, res) => {
             GROUP BY C.contents_idx) M
             ON S.contents_idx = M.contents_idx) R
             ON G.category_idx = R.category_idx
-            ORDER BY R.fixed_date DESC, R.created_date DESC
+            ORDER BY R.fixed_date DESC, R.created_date DESC, R.contents_idx DESC
     `
 
     const getStorageMainTransacion = await db.Transaction(async(connection) => {
