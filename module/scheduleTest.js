@@ -31,18 +31,17 @@ module.exports = {
 
                 //푸시알람 실행
                 readitTime.readitTimeAlarm(registrationToken, rule.hour)})
-                console.log('else')
-                console.log(i)
+
         }
 
-        //위의 alarm table을 통해 리딧타임설정이 off임을 알았을 때
-        else{
-            //devicetoken을 무효화함
-            let updateTokenNullQuery = `UPDATE user SET device_token = null WHERE user_idx = ${AlarmInfoNone[i].user_idx}`
-            let TokenNullResult = await db.queryParam_None(updateTokenNullQuery);
-            console.log('if')
-            console.log(i)
-        }
+        //위의 alarm table을 통해 리딧타임설정이 off임을 알았을 때 devicetoken무효화 (devicetoken 냅두기)
+        // else{
+        //     //devicetoken을 무효화함
+        //     let updateTokenNullQuery = `UPDATE user SET device_token = null WHERE user_idx = ${AlarmInfoNone[i].user_idx}`
+        //     let TokenNullResult = await db.queryParam_None(updateTokenNullQuery);
+        //     console.log('if')
+        //     console.log(i)
+        // }
         
         
     }
