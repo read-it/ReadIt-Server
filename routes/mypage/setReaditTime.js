@@ -19,11 +19,15 @@ router.put('/:readittime_flag', authUtils.isLoggedin, async (req, res) => {
         res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.BAD_PARAMETER));
     }
     else{
+
+        //시간이 범위를 벗어나는 경우
         if(req.body.alarm_hour>24 || req.body.alarm_hour<0 || req.body.alarm_minute>59 || req.body.alarm_minute<0){
             res.status(200).send(util.successFalse(statusCode.BAD_REQUEST, resMessage.BAD_TIME));
         }
 
-        else{
+        else{//시간이 범위를 벗어나지 않는 경우
+
+            //user_idx로 alarmInfo찾음
             let selectAlarmInfoQuery = 'SELECT * FROM alarm WHERE user_idx = ?'
             let AlarmInfo = await db.queryParam_Arr(selectAlarmInfoQuery, userIdx);
 
@@ -32,11 +36,12 @@ router.put('/:readittime_flag', authUtils.isLoggedin, async (req, res) => {
                 //리딧타임 정보 DB에 insert
                 let insertReaditTimeQuery = 'INSERT INTO alarm (user_idx,readittime_flag, alarm_hour, alarm_minute) VALUES (?,?,?,?)'
                 let insertReaditTimeResult = await db.queryParam_Arr(insertReaditTimeQuery,[userIdx,readitTimeFlag, req.body.alarm_hour, req.body.alarm_minute])
-                //리딧타임 정보 insert 실패
+                
+                //리딧타임 정보 DB에 insert 실패
                 if(!insertReaditTimeResult){
                     res.status(200).send(util.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
                 }
-                //리딧타임 정보 insert 성공
+                //리딧타임 정보 DB에 insert 성공
                 else{
                     newalarmModule.select();
                     res.status(200).send(util.successTrue(statusCode.OK, resMessage.SET_READIT_TIME));
