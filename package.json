@@ -15,7 +15,7 @@
     "debug": "~2.6.9",
     "email-validator": "^2.0.4",
     "express": "^4.16.4",
-    "firebase-admin": "^8.2.0",
+    "firebase-admin": "^8.6.0",
     "googleapis": "^40.0.1",
     "hangul-js": "^0.2.5",
     "http-errors": "^1.6.3",

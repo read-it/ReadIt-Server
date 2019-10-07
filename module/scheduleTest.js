@@ -24,7 +24,7 @@ module.exports = {
         //리딧타임설정이 on일때
         if(AlarmInfoNone[i].readittime_flag == 1){
             //devicetoken 찾기
-            let registrationToken = AlarmInfoNone[i].device_token.toString();
+            let registrationToken = AlarmInfoNone[i].device_token;
     
             //알림시간에 실행
             var scheduler = schedule.scheduleJob(rule, function(){
